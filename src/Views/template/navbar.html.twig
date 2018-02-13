@@ -1,0 +1,21 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{{ path_for('index') }}">{{ picker('app.name') }}</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path_for('index') }}">Accueil <span class="sr-only">(current)</span></a>
+        </li>
+    </ul>
+    {% if auth %}
+        <a class="btn btn-light btn-sm mr-1" href="{{ path_for('user.view') }}">Mon compte</a>
+        <a class="btn btn-danger btn-sm" href="{{ path_for('user.logout') }}">Déconnexion</a>
+    {% else %}
+        <a class="btn btn-light btn-sm mr-1" href="{{ path_for('user.register.form') }}">Inscription</a>
+        <a class="btn btn-success btn-sm" href="{{ path_for('user.login.form') }}">Connexion</a>
+    {% endif %}
+    </div>
+</nav>

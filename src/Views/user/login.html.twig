@@ -1,0 +1,30 @@
+{% extends "layouts/layout.html.twig" %}
+
+{% set title = 'Connexion' %}
+
+{% block content %}
+    <div class="mt-3">
+        <h2>Connexion</h2>
+        <hr />
+        <form action="{{ path_for('user.login') }}" method="post">
+            {{ csrf() }}
+            <div class="form-group">
+                <label for="mail">Email :</label>
+                <input id="mail" name="mail" type="email" class="{% if flash.errors.mail %}has-error{% endif %} form-control" value="{{ persistValues.mail }}" placeholder="Email" required>
+                <div class="has-error">
+                    {% if flash.errors.mail %}{{ flash.errors.mail }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe :</label>
+                <input id="password" name="password" type="password" class="{% if flash.errors.password %}has-error{% endif %} form-control" required>
+                <div class="has-error">
+                    {% if flash.errors.password %}{{ flash.errors.password }}{% endif %}
+                </div>
+            </div>
+
+            <input type="submit" class="btn btn-primary mb-3" value="Se connecter">
+            <p>Vous ne possédez pas de compte ? <a href="{{ path_for('user.register.form') }}">Inscrivez-vous !</a></p>
+        </form>
+    </div>
+{% endblock %}
