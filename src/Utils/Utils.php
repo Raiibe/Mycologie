@@ -49,7 +49,7 @@ class Utils {
             ';
         }
         echo '</ol>';
-        echo '<pre>';
+        echo '<pre style="color: white">';
         print_r($var);
         echo '</pre>';
         echo '</div>';
