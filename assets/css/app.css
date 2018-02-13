@@ -1,3 +1,19 @@
 input[type=submit], button {
     cursor: pointer;
 }
+
+nav.navbar {
+    background-color: #CB4531 !important;
+}
+
+img#logo-slm {
+    width: 30px;
+    height: auto;
+    position: relative;
+    top: -5px;
+}
+
+.btn-slm {
+    border-color: #CB4531 !important;
+    background-color: #CB4531 !important;
+}
