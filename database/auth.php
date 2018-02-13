@@ -24,7 +24,8 @@ Manager::schema()->create('user', function (Blueprint $table) {
     $table->string('last_name')->nullable();
     $table->string('first_name')->nullable();
     $table->text('role');
-    $table->timestamps();
+    $table->timestamp('updated_at');
+    $table->timestamp('created_at')->useCurrent();
     $table->index('id');
 });
 
@@ -32,7 +33,8 @@ Manager::schema()->create('edibility', function (Blueprint $table) {
     $table->engine = 'InnoDB';
     $table->increments('id');
     $table->string('status')->unique();
-    $table->timestamps();
+    $table->timestamp('updated_at');
+    $table->timestamp('created_at')->useCurrent();
     $table->index('id');
 });
 
@@ -40,7 +42,8 @@ Manager::schema()->create('biotope', function (Blueprint $table) {
     $table->engine = 'InnoDB';
     $table->increments('id');
     $table->string('region')->unique();
-    $table->timestamps();
+    $table->timestamp('updated_at');
+    $table->timestamp('created_at')->useCurrent();
     $table->index('id');
 });
 
@@ -48,7 +51,8 @@ Manager::schema()->create('trophic_status', function (Blueprint $table) {
     $table->engine = 'InnoDB';
     $table->increments('id');
     $table->string('status')->unique();
-    $table->timestamps();
+    $table->timestamp('updated_at');
+    $table->timestamp('created_at')->useCurrent();
     $table->index('id');
 });
 
@@ -60,7 +64,8 @@ Manager::schema()->create('specie', function (Blueprint $table) {
     $table->unsignedInteger('edibility_id');
     $table->unsignedInteger('biotope_id');
     $table->unsignedInteger('trophic_status_id');
-    $table->timestamps();
+    $table->timestamp('updated_at');
+    $table->timestamp('created_at')->useCurrent();
     $table->index('id');
     $table->index('name_latin');
     $table->index('edibility_id');
