@@ -20,5 +20,32 @@
                 </div>
             {% endfor %}
         </div>
+
+        {% if pagination %}
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {% if pagination|first <= 1 %}disabled{% endif %}">
+                        <a class="page-link" href="?page={{ pagination.currentPage - 1 }}&order={{ order }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+
+                    {% for i in 1..pagination.lastPage %}
+                        <li class="page-item {% if pagination.currentPage == i %}active{% endif %}">
+                            <a class="page-link" href="?page={{ i }}&order={{ order }}">{{ i }}</a>
+                        </li>
+                    {% endfor %}
+
+                    <li class="page-item {% if pagination.currentPage >= pagination.lastPage %}disabled{% endif %}">
+                        <a class="page-link" href="?page={{ pagination.currentPage + 1 }}&order={{ order }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+        {% endif %}
     </div>
 {% endblock %}
