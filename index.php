@@ -29,8 +29,6 @@ $app = new \Slim\App([
     ]
 ]);
 
-//require('database/auth.php');
-
 require 'src' . DS . 'App' . DS . 'container.php';
 require 'src' . DS . 'App' . DS . 'handlers.php';
 require 'src' . DS . 'App' . DS . 'middlewares.php';
