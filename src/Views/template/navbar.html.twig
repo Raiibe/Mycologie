@@ -10,12 +10,12 @@
             <a class="nav-link" href="{{ path_for('index') }}">Accueil <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Champignons <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{{ path_for('species') }}">Champignons <span class="sr-only">(current)</span></a>
         </li>
     </ul>
     {% if auth %}
         <a class="btn btn-light btn-sm mr-1" href="{{ path_for('user.view') }}">Mon compte</a>
-        <a class="btn btn-danger btn-sm" href="{{ path_for('user.logout') }}">Déconnexion</a>
+        <a class="btn btn-danger btn-sm btn-slm-yellow" href="{{ path_for('user.logout') }}">Déconnexion</a>
     {% else %}
         <a class="btn btn-light btn-sm mr-1" href="{{ path_for('user.register.form') }}">Inscription</a>
         <a class="btn btn-success btn-sm" href="{{ path_for('user.login.form') }}">Connexion</a>

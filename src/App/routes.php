@@ -1,6 +1,7 @@
 <?php
 use App\Controllers\AppController;
 
+use App\Controllers\SpecieController;
 use App\Controllers\UserController;
 use App\Middlewares\GuestMiddleware;
 use App\Middlewares\AuthMiddleware;
@@ -33,4 +34,11 @@ $app->group('/user', function() {
     $this->get('/logout', UserController::class . ':logout')
         ->add(new AuthMiddleware($container))
         ->setName('user.logout');
+});
+
+$app->group('/species', function() {
+    $container = $this->getContainer();
+
+    $this->get('[/]', SpecieController::class . ':index')
+        ->setName('species');
 });
