@@ -1,13 +1,5 @@
 <?php
 
-/**
- * db.config.php
- *
- * Database configuration
- *
- * @author     WILMOUTH Steven
- * @version    1
- */
 return array(
 	'default' => 'dev', // Name of the configuration to use
 

@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\Specie;
 use App\Utils\Paginator;
-use App\Utils\Session;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -20,12 +19,15 @@ class SpecieController extends BaseController
         $page = (($page > ($pagination['lastPage'] - 1)) ? ($pagination['lastPage'] - 1) : $page);
         $offset = ($perPage * $page);
 
+        $order = (!is_null($request->getParam('order')) ? $request->getParam('order') : 'name_latin');
         $species = Specie::limit($perPage)
             ->offset($offset)
+            ->orderBy($order)
             ->get();
 
         $this->render($response, 'specie/index', [
             'species' => $species,
+            'order' => $order,
             'pagination' => $pagination
         ]);
     }
