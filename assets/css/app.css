@@ -33,3 +33,9 @@ img#logo-slm {
     border-color: #CB4531 !important;
     background-color: #CB4531 !important;
 }
+
+.pagination li.page-item.disabled a.page-link {
+    color: grey !important;
+    border-color: lightgrey !important;
+    background-color: lightgrey !important;
+}

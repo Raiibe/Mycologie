@@ -14,15 +14,19 @@ class SpecieController extends BaseController
     {
         $species = Specie::get();
         $perPage = 10;
-        $offset = ($perPage * (!is_null($request->getParam('page')) ? ($request->getParam('page') - 1) : 0));
         $total = count($species);
+        $page = (!is_null($request->getParam('page')) ? ($request->getParam('page') - 1) : 0);
+        $pagination = Paginator::paginate($perPage, $total, $request->getParam('page'));
+        $page = (($page > ($pagination['lastPage'] - 1)) ? ($pagination['lastPage'] - 1) : $page);
+        $offset = ($perPage * $page);
+
         $species = Specie::limit($perPage)
             ->offset($offset)
             ->get();
 
         $this->render($response, 'specie/index', [
             'species' => $species,
-            'pagination' => Paginator::paginate($perPage, $total, $request->getParam('page'))
+            'pagination' => $pagination
         ]);
     }
 }
