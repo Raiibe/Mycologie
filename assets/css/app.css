@@ -3,7 +3,27 @@ input[type=submit], button {
 }
 
 nav.navbar {
+    padding-bottom: 0;
     background-color: #CB4531 !important;
+}
+
+ul.navbar-nav {
+    margin-top: 4px !important;
+}
+
+ul.navbar-nav li.nav-item a.nav-link {
+    color: white;
+    display: inline-block !important;
+}
+
+ul.navbar-nav li.nav-item.active a.nav-link {
+    border-bottom: 5px solid #EACE36 !important;
+}
+
+@media screen and (max-width: 991px) {
+    nav.navbar .btn {
+        margin-top: 10px;
+    }
 }
 
 img#logo-slm {
