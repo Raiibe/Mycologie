@@ -6,13 +6,14 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
+        <li class="nav-item {% if route == 'home' %}active{% endif %}">
             <a class="nav-link" href="{{ path_for('index') }}">Accueil <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item {% if route == 'species' %}active{% endif %}">
             <a class="nav-link" href="{{ path_for('species') }}">Champignons <span class="sr-only">(current)</span></a>
         </li>
     </ul>
+
     {% if auth %}
         <a class="btn btn-light btn-sm mr-1 mb-2" href="{{ path_for('user.view') }}">Mon compte</a>
         <a class="btn btn-danger btn-sm btn-slm-yellow mb-2" href="{{ path_for('user.logout') }}">Déconnexion</a>
@@ -22,12 +23,3 @@
     {% endif %}
     </div>
 </nav>
-
-{% block js %}
-    <script type="text/javascript">
-        $(document).ready(() => {
-            let pathname = window.location.pathname;
-            $('li.nav-item > a.nav-link[href="'+pathname+'"]').parent().addClass('active');
-        });
-    </script>
-{% endblock %}
