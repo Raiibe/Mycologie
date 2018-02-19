@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost
--- Généré le :  Mer 14 Février 2018 à 16:17
+-- Généré le :  Lun 19 Février 2018 à 18:48
 -- Version du serveur :  10.0.33-MariaDB-0ubuntu0.16.04.1
 -- Version de PHP :  7.0.25-0ubuntu0.16.04.1
 
@@ -74,7 +74,7 @@ CREATE TABLE `edibility` (
 INSERT INTO `edibility` (`id`, `status`, `updated_at`, `created_at`) VALUES
 (1, 'Mortel', '2018-02-14 14:06:42', '2018-02-14 14:06:42'),
 (2, 'Toxique', '2018-02-14 14:06:42', '2018-02-14 14:06:42'),
-(3, 'Toxique/comestible avec recommandation', '2018-02-14 14:06:42', '2018-02-14 14:06:42'),
+(3, 'Toxique/comestible avec recommandation', '2018-02-19 16:37:43', '2018-02-14 14:06:42'),
 (4, 'Comestible', '2018-02-14 14:06:42', '2018-02-14 14:06:42'),
 (5, 'Sans valeur', '2018-02-14 14:06:42', '2018-02-14 14:06:42'),
 (6, 'Comestible bien cuit', '2018-02-14 14:06:54', '2018-02-14 14:06:54'),
@@ -91,8 +91,9 @@ CREATE TABLE `specie` (
   `name_latin` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `name_french` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `edibility_id` int(10) UNSIGNED NOT NULL,
-  `biotope_id` int(10) UNSIGNED NOT NULL,
   `trophic_status_id` int(10) UNSIGNED NOT NULL,
+  `biotope_id` int(10) UNSIGNED NOT NULL,
+  `other_region` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -101,18 +102,18 @@ CREATE TABLE `specie` (
 -- Contenu de la table `specie`
 --
 
-INSERT INTO `specie` (`id`, `name_latin`, `name_french`, `edibility_id`, `biotope_id`, `trophic_status_id`, `updated_at`, `created_at`) VALUES
-(1, 'Abortiporus biennis', 'Polypore bisannuel', 5, 15, 3, '2018-02-14 15:07:21', '2018-02-14 14:55:34'),
-(2, 'Agaricus urinascens ', 'Agaric géant des prés', 7, 13, 3, '2018-02-14 15:07:22', '2018-02-14 14:57:44'),
-(3, 'Agaricus arvensis', 'Agaric des jachères, Boule-de-neige', 7, 15, 3, '2018-02-14 15:07:22', '2018-02-14 14:57:44'),
-(4, 'Agaricus augustus ', 'Agaric impérial', 5, 15, 3, '2018-02-14 15:07:22', '2018-02-14 15:06:45'),
-(5, 'Agaricus bernardii', 'Agaric des prés salés', 2, 15, 3, '2018-02-14 15:07:22', '2018-02-14 15:06:45'),
-(6, 'Agaricus bisporus', 'Champignon de Paris forme sauvage', 4, 15, 3, '2018-02-14 15:16:22', '2018-02-14 15:13:32'),
-(7, 'Agaricus bitorquis', 'Agaric des trottoirs', 4, 15, 3, '2018-02-14 15:16:22', '2018-02-14 15:13:32'),
-(8, 'Agaricus campestris', 'Rosé des prés, Agaric champêtre', 4, 15, 3, '2018-02-14 15:16:22', '2018-02-14 15:14:31'),
-(9, 'Agaricus comtulus ', 'Agaric élégant', 4, 13, 3, '2018-02-14 15:16:22', '2018-02-14 15:14:31'),
-(10, 'Hypholoma capnoides ', 'Hypholome à lames enfumées', 2, 2, 3, '2018-02-14 15:16:22', '2018-02-14 15:15:34'),
-(11, 'Schizopora paradoxa', 'Polypore paradoxal', 5, 11, 3, '2018-02-14 15:16:22', '2018-02-14 15:15:34');
+INSERT INTO `specie` (`id`, `name_latin`, `name_french`, `edibility_id`, `trophic_status_id`, `biotope_id`, `other_region`, `updated_at`, `created_at`) VALUES
+(1, 'Abortiporus biennis', 'Polypore bisannuel', 5, 3, 15, NULL, '2018-02-14 15:07:21', '2018-02-14 14:55:34'),
+(2, 'Agaricus urinascens ', 'Agaric géant des prés', 7, 3, 13, NULL, '2018-02-14 15:07:22', '2018-02-14 14:57:44'),
+(3, 'Agaricus arvensis', 'Agaric des jachères, Boule-de-neige', 7, 3, 15, NULL, '2018-02-14 15:07:22', '2018-02-14 14:57:44'),
+(4, 'Agaricus augustus ', 'Agaric impérial', 5, 3, 15, NULL, '2018-02-14 15:07:22', '2018-02-14 15:06:45'),
+(5, 'Agaricus bernardii', 'Agaric des prés salés', 2, 3, 15, NULL, '2018-02-14 15:07:22', '2018-02-14 15:06:45'),
+(6, 'Agaricus bisporus', 'Champignon de Paris forme sauvage', 4, 3, 15, NULL, '2018-02-14 15:16:22', '2018-02-14 15:13:32'),
+(7, 'Agaricus bitorquis', 'Agaric des trottoirs', 4, 3, 15, NULL, '2018-02-14 15:16:22', '2018-02-14 15:13:32'),
+(8, 'Agaricus campestris', 'Rosé des prés, Agaric champêtre', 4, 3, 15, NULL, '2018-02-14 15:16:22', '2018-02-14 15:14:31'),
+(9, 'Agaricus comtulus ', 'Agaric élégant', 4, 3, 13, NULL, '2018-02-14 15:16:22', '2018-02-14 15:14:31'),
+(10, 'Hypholoma capnoides ', 'Hypholome à lames enfumées', 2, 3, 2, NULL, '2018-02-14 15:16:22', '2018-02-14 15:15:34'),
+(11, 'Schizopora paradoxa', 'Polypore paradoxal', 5, 3, 11, NULL, '2018-02-14 15:16:22', '2018-02-14 15:15:34');
 
 -- --------------------------------------------------------
 
@@ -218,7 +219,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `biotope`
 --
 ALTER TABLE `biotope`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT pour la table `edibility`
 --
@@ -228,7 +229,7 @@ ALTER TABLE `edibility`
 -- AUTO_INCREMENT pour la table `specie`
 --
 ALTER TABLE `specie`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT pour la table `trophic_status`
 --

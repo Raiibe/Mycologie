@@ -62,8 +62,9 @@ Manager::schema()->create('specie', function (Blueprint $table) {
     $table->string('name_latin')->unique();
     $table->string('name_french')->unique();
     $table->unsignedInteger('edibility_id');
-    $table->unsignedInteger('biotope_id');
     $table->unsignedInteger('trophic_status_id');
+    $table->unsignedInteger('biotope_id');
+    $table->string('other_region')->nullable();
     $table->timestamp('updated_at');
     $table->timestamp('created_at')->useCurrent();
     $table->index('id');

@@ -15,25 +15,48 @@
                     Trier par :
                 </label>
             </div>
-            <select class="custom-select" id="order" onChange="location = this.options[this.selectedIndex].value;">
-                <option {% if order == 'name_latin' %}selected{% endif %} value="{{ path_for('species') }}?{% if pagination.currentPage %}page={{ pagination.currentPage }}&{% endif %}order=name_latin">Nom latin</option>
-                <option {% if order == 'name_french' %}selected{% endif %} value="{{ path_for('species') }}?{% if pagination.currentPage %}page={{ pagination.currentPage }}&{% endif %}order=name_french">Nom français</option>
+            <select class="custom-select" id="order" onChange="location = this.options[this.selectedIndex].value">
+                <optgroup label="Noms">
+                    <option {% if order == 'name_latin' %}selected{% endif %} value="{{ path_for('species') }}?order=name_latin">Nom latin</option>
+                    <option {% if order == 'name_french' %}selected{% endif %} value="{{ path_for('species') }}?order=name_french">Nom français</option>
+                </optgroup>
+                <optgroup label="Comestibilité">
+                    {% for edibility in edibilities %}
+                        <option {% if order == edibility.status %}selected{% endif %} value="{{ path_for('species') }}?order=edibility_{{ edibility.id }}">{{ edibility.status }}</option>
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Biotopes">
+                    {% for biotope in biotopes %}
+                        <option {% if order == biotope.region %}selected{% endif %} value="{{ path_for('species') }}?order=biotope_{{ biotope.id }}">{{ biotope.region }}</option>
+                    {% endfor %}
+                </optgroup>
+                <optgroup label="Statuts trophiques">
+                    {% for trophic in trophic_status %}
+                        <option {% if order == trophic.status %}selected{% endif %} value="{{ path_for('species') }}?order=trophic_{{ trophic.id }}">{{ trophic.status }}</option>
+                    {% endfor %}
+                </optgroup>
             </select>
         </form>
-        <div class="row mt-4">
-            {% for specie in species %}
-                <div class="card col-10 col-xl-5 col-lg-5 col-sm-10 col-md-5 mb-5 ml-5 p-0">
-                    <img class="card-img-top" src="http://via.placeholder.com/350x150" alt="{{ specie.name_latin }}">
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="#">{{ specie.name_latin }} - {{ specie.name_french }}</a></h5>
-                        <p class="card-text"><strong>Comestibilité :</strong> {{ specie.getEdibility.status }}</p>
-                        <p class="card-text"><strong>Statut trophique :</strong> {{ specie.getTrophicStatus.status }}</p>
-                        <p class="card-text"><strong>Région :</strong> {{ specie.getBiotope.region }}</p>
-                        <a href="#" class="btn btn-primary btn-slm">Plus de détails</a>
+        {% if species | length > 0 %}
+            <div class="row mt-4">
+                {% for specie in species %}
+                    <div class="card col-10 col-xl-5 col-lg-5 col-sm-10 col-md-5 mb-5 ml-5 p-0">
+                        <img class="card-img-top" src="http://via.placeholder.com/350x150" alt="{{ specie.name_latin }}">
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="#">{{ specie.name_latin }} - {{ specie.name_french }}</a></h5>
+                            <p class="card-text"><strong>Comestibilité :</strong> {{ specie.getEdibility.status }}</p>
+                            <p class="card-text"><strong>Statut trophique :</strong> {{ specie.getTrophicStatus.status }}</p>
+                            <p class="card-text"><strong>Région :</strong> {{ specie.getBiotope.region }}</p>
+                            <a href="#" class="btn btn-primary btn-slm">Plus de détails</a>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info mt-4" role="alert">
+                Aucuns champignons disponibles pour cette catégorie !
+            </div>
+        {% endif %}
 
         {% if pagination %}
             <nav aria-label="Page navigation">
