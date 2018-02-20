@@ -22,17 +22,17 @@
                 </optgroup>
                 <optgroup label="Comestibilité">
                     {% for edibility in edibilities %}
-                        <option {% if order == edibility.status %}selected{% endif %} value="{{ path_for('species') }}?order=edibility_{{ edibility.id }}">{{ edibility.status }}</option>
+                        <option {% if e == edibility.status %}selected{% endif %} value="{{ path_for('species') }}?e={{ edibility.status }}">{{ edibility.status }}</option>
                     {% endfor %}
                 </optgroup>
                 <optgroup label="Biotopes">
                     {% for biotope in biotopes %}
-                        <option {% if order == biotope.region %}selected{% endif %} value="{{ path_for('species') }}?order=biotope_{{ biotope.id }}">{{ biotope.region }}</option>
+                        <option {% if b == biotope.region %}selected{% endif %} value="{{ path_for('species') }}?b={{ biotope.region }}">{{ biotope.region }}</option>
                     {% endfor %}
                 </optgroup>
                 <optgroup label="Statuts trophiques">
                     {% for trophic in trophic_status %}
-                        <option {% if order == trophic.status %}selected{% endif %} value="{{ path_for('species') }}?order=trophic_{{ trophic.id }}">{{ trophic.status }}</option>
+                        <option {% if ts == trophic.status %}selected{% endif %} value="{{ path_for('species') }}?ts={{ trophic.status }}">{{ trophic.status }}</option>
                     {% endfor %}
                 </optgroup>
             </select>
@@ -61,8 +61,8 @@
         {% if pagination %}
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item {% if pagination|first <= 1 %}disabled{% endif %}">
-                        <a class="page-link" href="?page={{ pagination.currentPage - 1 }}{% if order %}&order={{ order }}{% endif %}" aria-label="Previous">
+                    <li class="page-item {% if pagination | first <= 1 %}disabled{% endif %}">
+                        <a class="page-link" href="?page={{ pagination.currentPage - 1 }}{% if order %}&order={{ order }}{% endif %}{% if e %}&e={{ e }}{% endif %}{% if b %}&b={{ b }}{% endif %}{% if ts %}&ts={{ ts }}{% endif %}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                             <span class="sr-only">Previous</span>
                         </a>
@@ -70,12 +70,12 @@
 
                     {% for i in 1..pagination.lastPage %}
                         <li class="page-item {% if pagination.currentPage == i or (pagination.currentPage <= 0 and i <= 1) or (pagination.currentPage > pagination.lastPage and i >= pagination.lastPage) %}active{% endif %}">
-                            <a class="page-link" href="?page={{ i }}{% if order %}&order={{ order }}{% endif %}">{{ i }}</a>
+                            <a class="page-link" href="?page={{ i }}{% if order %}&order={{ order }}{% endif %}{% if e %}&e={{ e }}{% endif %}{% if b %}&b={{ b }}{% endif %}{% if ts %}&ts={{ ts }}{% endif %}">{{ i }}</a>
                         </li>
                     {% endfor %}
 
                     <li class="page-item {% if pagination.currentPage >= pagination.lastPage %}disabled{% endif %}">
-                        <a class="page-link" href="?page={{ pagination.currentPage + 1 }}{% if order %}&order={{ order }}{% endif %}" aria-label="Next">
+                        <a class="page-link" href="?page={{ pagination.currentPage + 1 }}{% if order %}&order={{ order }}{% endif %}{% if e %}&e={{ e }}{% endif %}{% if b %}&b={{ b }}{% endif %}{% if ts %}&ts={{ ts }}{% endif %}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                             <span class="sr-only">Next</span>
                         </a>
