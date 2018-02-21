@@ -68,4 +68,14 @@ class SpecieController extends BaseController
             'pagination' => $pagination
         ]);
     }
+
+    public function getSpecie(RequestInterface $request, ResponseInterface $response, $args)
+    {
+
+        $specie = Specie::where('id', '=', $args['id'])->first();
+
+        $this->render($response, 'specie/specie', [
+            'specie' => $specie
+        ]);
+    }
 }
