@@ -48,6 +48,7 @@
                             <p class="card-text"><strong>Statut trophique :</strong> {{ specie.getTrophicStatus.status }}</p>
                             <p class="card-text"><strong>Région :</strong> {{ specie.getBiotope.region }}</p>
                             <a href="#" class="btn btn-primary btn-slm">Plus de détails</a>
+                            <img src="{{ qr_code(specie.id) }}" />
                         </div>
                     </div>
                 {% endfor %}

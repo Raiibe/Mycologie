@@ -20,7 +20,8 @@
         "slim/csrf": "^0.8.1",
         "respect/validation": "^1.1",
         "fzaninotto/faker": "^1.6",
-        "voku/anti-xss": "^2.1"
+        "voku/anti-xss": "^2.1",
+        "chillerlan/php-qrcode": "dev-master"
     },
     "autoload": {
     	"psr-4": {
