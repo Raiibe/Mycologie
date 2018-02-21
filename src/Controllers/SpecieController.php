@@ -65,7 +65,8 @@ class SpecieController extends BaseController
             'e' => $e,
             'b' => $b,
             'ts' => $ts,
-            'pagination' => $pagination
+            'pagination' => $pagination,
+            'QRCodeURI' => $request->getUri() . '/species/'
         ]);
     }
 }
