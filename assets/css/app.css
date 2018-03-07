@@ -36,6 +36,7 @@ img#logo-slm {
 }
 
 .btn-slm {
+    color: white !important;
     border-color: #CB4531 !important;
     background-color: #CB4531 !important;
 }
@@ -44,6 +45,12 @@ img#logo-slm {
     color: black !important;
     border-color: #EACE36 !important;
     background-color: #EACE36 !important;
+}
+
+.btn-slm-white {
+    color: #CB4531 !important;
+    border-color: #CB4531 !important;
+    background-color: white !important;
 }
 
 .pagination li.page-item a.page-link {

@@ -1,0 +1,38 @@
+{% extends "layouts/layout.html.twig" %}
+
+{% set title = 'Edition compte' %}
+
+{% block content %}
+    <div class="mt-3">
+        <h2>Modifier compte</h2>
+        <hr />
+
+        <form action="{{ path_for('user.update') }}" method="post">
+            {{ csrf() }}
+            <div class="form-group">
+                <label for="last_name">Nom :</label>
+                <input id="last_name" name="last_name" type="text" class="{% if flash.errors.last_name %}has-error{% endif %} form-control" value="{% if persistValues.last_name %}{{ persistValues.last_name }}{% else %}{{ user.last_name }}{% endif %}" placeholder="Nom" autofocus required>
+                <div class="has-error">
+                    {% if flash.errors.last_name %}{{ flash.errors.last_name }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="first_name">Prénom :</label>
+                <input id="first_name" name="first_name" type="text" class="{% if flash.errors.first_name %}has-error{% endif %} form-control" value="{% if persistValues.first_name %}{{ persistValues.first_name }}{% else %}{{ user.first_name }}{% endif %}" placeholder="Prénom" required>
+                <div class="has-error">
+                    {% if flash.errors.first_name %}{{ flash.errors.first_name }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mail">Email :</label>
+                <input id="mail" name="mail" type="email" class="{% if flash.errors.mail %}has-error{% endif %} form-control" value="{% if persistValues.mail %}{{ persistValues.mail }}{% else %}{{ user.mail }}{% endif %}" placeholder="Email" required>
+                <div class="has-error">
+                    {% if flash.errors.mail %}{{ flash.errors.mail }}{% endif %}
+                </div>
+            </div>
+
+            <a class="btn btn-primary btn-slm-white mb-3 mr-3" href="{{ path_for('user.view') }}">Annuler</a>
+            <input type="submit" class="btn btn-primary btn-slm mb-3" value="Sauvegarder">
+        </form>
+    </div>
+{% endblock %}
