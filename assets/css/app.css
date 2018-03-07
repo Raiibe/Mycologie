@@ -13,10 +13,12 @@ ul.navbar-nav {
 
 ul.navbar-nav li.nav-item a.nav-link {
     color: white;
+    margin-bottom: 5px !important;
     display: inline-block !important;
 }
 
 ul.navbar-nav li.nav-item.active a.nav-link {
+    margin-bottom: 0 !important;
     border-bottom: 5px solid #EACE36 !important;
 }
 
