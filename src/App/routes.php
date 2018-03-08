@@ -34,6 +34,27 @@ $app->group('/user', function() {
     $this->get('/logout', UserController::class . ':logout')
         ->add(new AuthMiddleware($container))
         ->setName('user.logout');
+
+    $this->get('/edit', UserController::class . ':edit')
+        ->add(new AuthMiddleware($container))
+        ->setName('user.edit');
+
+    $this->post('/update', UserController::class . ':update')
+        ->add(new AuthMiddleware($container))
+        ->setName('user.update');
+
+    $this->get('/editPassword', UserController::class . ':editPassword')
+        ->add(new AuthMiddleware($container))
+        ->setName('user.editPassword');
+
+    $this->post('/updatePassword', UserController::class . ':updatePassword')
+        ->add(new AuthMiddleware($container))
+        ->setName('user.updatePassword');
+
+    $this->get('/delete', UserController::class . ':delete')
+        ->add(new AuthMiddleware($container))
+        ->add(new GuestMiddleware($container))
+        ->setName('user.delete');
 });
 
 $app->group('/species', function() {
