@@ -35,6 +35,30 @@ img#logo-slm {
     top: -5px;
 }
 
+.text-color-slm {
+    color: #CB4531 !important;
+}
+
+.carousel-indicators li.active {
+    background-color: #CB4531 !important;
+}
+
+:root {
+    --carousel-control-width: 10%;
+}
+
+.carousel-item {
+    margin: 0 var(--carousel-control-width) !important;
+}
+
+.carousel-item img {
+    width: calc(100% - var(--carousel-control-width) * 2) !important;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: var(--carousel-control-width) !important;
+}
+
 .btn-slm {
     color: white !important;
     border-color: #CB4531 !important;
