@@ -1,3 +1,22 @@
+footer {
+    color: white;
+    height: 100%;
+    background-color: #CB4531;
+}
+
+footer div.container > div.row > div {
+    margin: 15px 0;
+}
+
+footer div.container div.copyright p {
+    margin: 0;
+    padding-bottom: 15px;
+}
+
+footer a, footer a:hover {
+    color: white;
+}
+
 input[type=submit], button {
     cursor: pointer;
 }
@@ -33,6 +52,11 @@ img#logo-slm {
     height: auto;
     position: relative;
     top: -5px;
+}
+
+img#logo-slm-footer {
+    width: 100px;
+    height: auto;
 }
 
 .text-color-slm {

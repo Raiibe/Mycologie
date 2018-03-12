@@ -48,7 +48,12 @@
                             <p class="card-text"><strong>Statut trophique :</strong> {{ specie.getTrophicStatus.status }}</p>
                             <p class="card-text"><strong>Région :</strong> {{ specie.getBiotope.region }}</p>
                             <a href="#" class="btn btn-primary btn-slm">Plus de détails</a>
-                            <img src="{{ qr_code(specie.id) }}" />
+
+                            {% if auth.role == 'admin' or auth.id == specie.creator_id %}
+                                <a href="{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}" class="btn btn-warning float-right">Supprimer</a>
+                            {% endif %}
+
+                            <!-- <img src="{{ qr_code(specie.id) }}" /> -->
                         </div>
                     </div>
                 {% endfor %}

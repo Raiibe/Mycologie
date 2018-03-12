@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Specie;
+use App\Models\User;
+use App\Utils\Session;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
