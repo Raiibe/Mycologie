@@ -4,8 +4,13 @@ footer {
     background-color: #CB4531;
 }
 
-footer div.container div.row div {
+footer div.container > div.row div.row div {
     margin: 15px 0;
+}
+
+footer div.container div.copyright p {
+    margin: 0;
+    padding-bottom: 15px;
 }
 
 footer a, footer a:hover {
