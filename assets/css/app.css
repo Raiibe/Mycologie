@@ -4,7 +4,7 @@ footer {
     background-color: #CB4531;
 }
 
-footer div.container > div.row div.row div {
+footer div.container > div.row > div {
     margin: 15px 0;
 }
 

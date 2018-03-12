@@ -5,6 +5,7 @@ use App\Middlewares\Twig\CsrfMiddleware;
 use App\Middlewares\Twig\FlashMiddleware;
 use App\Middlewares\Twig\PersistentValuesMiddleware;
 use App\Middlewares\Twig\PickerMiddleware;
+use App\Middlewares\Twig\QRCodeMiddleware;
 
 // Flash Message Middleware Additions
 $app->add(new FlashMiddleware($container->views->getEnvironment()));
@@ -14,6 +15,9 @@ $app->add(new PersistentValuesMiddleware($container->views->getEnvironment()));
 
 // Additions to the variable recovery Middleware in configuration files
 $app->add(new PickerMiddleware($container->views->getEnvironment()));
+
+// Additions to the variable recovery Middleware in configuration files
+$app->add(new QRCodeMiddleware($container->views->getEnvironment()));
 
 // Additions to the Connection Management Middleware
 $app->add(new AuthMiddleware($container->views->getEnvironment()));
