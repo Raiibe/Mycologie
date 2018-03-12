@@ -62,4 +62,8 @@ $app->group('/species', function() {
 
     $this->get('[/]', SpecieController::class . ':index')
         ->setName('species');
+
+    $this->get('/delete/{specie_id}', SpecieController::class . ':deleteOne')
+        ->add(new AuthMiddleware($container))
+        ->setName('species.deleteOne');
 });

@@ -68,4 +68,20 @@ class SpecieController extends BaseController
             'pagination' => $pagination
         ]);
     }
+
+    public function deleteOne(RequestInterface $request, ResponseInterface $response, $args)
+    {
+        $specie = Specie::where('id', '=', $args['specie_id'])->first();
+
+        if (!is_null($specie)) {
+            $name_specie = $specie->name_latin;
+            $specie->delete();
+
+            $this->flash('success', 'Le champignon "' . $name_specie . '" a bien été supprimé !');
+        } else {
+            $this->flash('error', 'Ce champignon n\'existe pas !');
+        }
+
+        return $this->redirect($response, 'species');
+    }
 }
