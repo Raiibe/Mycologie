@@ -3,6 +3,7 @@ use App\Controllers\AppController;
 
 use App\Controllers\SpecieController;
 use App\Controllers\UserController;
+use App\Controllers\PdfController;
 use App\Middlewares\GuestMiddleware;
 use App\Middlewares\AuthMiddleware;
 
@@ -67,3 +68,5 @@ $app->group('/species', function() {
         ->add(new AuthMiddleware($container))
         ->setName('species.deleteOne');
 });
+
+$app->get('/pdf', PdfController::class . ':index');
