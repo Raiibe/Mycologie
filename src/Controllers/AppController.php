@@ -17,8 +17,7 @@ class AppController extends BaseController
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        $species_month_recent = Specie::whereMonth('created_at', '=', date('m'))
-            ->whereYear('created_at', '=', date('y'))
+        $species_month_recent = Specie::whereBetween('created_at', [date('Y-m-1'), date('Y-m-t')])
             ->get();
 
         $this->render($response, 'app/index', [
