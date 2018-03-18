@@ -53,7 +53,7 @@
                                 <a href="{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}" class="btn btn-warning float-right">Supprimer</a>
                             {% endif %}
 
-                            <!-- <img src="{{ qr_code(specie.id) }}" /> -->
+                            <!-- <img src="{ qr_code(specie.id) }}" /> -->
                         </div>
                     </div>
                 {% endfor %}
@@ -75,9 +75,11 @@
                     </li>
 
                     {% for i in 1..pagination.lastPage %}
-                        <li class="page-item {% if pagination.currentPage == i or (pagination.currentPage <= 0 and i <= 1) or (pagination.currentPage > pagination.lastPage and i >= pagination.lastPage) %}active{% endif %}">
-                            <a class="page-link" href="?page={{ i }}{% if order %}&order={{ order }}{% endif %}{% if e %}&e={{ e }}{% endif %}{% if b %}&b={{ b }}{% endif %}{% if ts %}&ts={{ ts }}{% endif %}">{{ i }}</a>
-                        </li>
+                        {% if i == 1 or i == pagination.currentPage or i % 10 == 0 or i == pagination.lastPage %}
+                            <li class="page-item {% if pagination.currentPage == i or (pagination.currentPage <= 0 and i <= 1) or (pagination.currentPage > pagination.lastPage and i >= pagination.lastPage) %}active{% endif %}">
+                                <a class="page-link" href="?page={{ i }}{% if order %}&order={{ order }}{% endif %}{% if e %}&e={{ e }}{% endif %}{% if b %}&b={{ b }}{% endif %}{% if ts %}&ts={{ ts }}{% endif %}">{{ i }}</a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
 
                     <li class="page-item {% if pagination.currentPage >= pagination.lastPage %}disabled{% endif %}">
