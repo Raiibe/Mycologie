@@ -39,13 +39,14 @@ class PdfMiddleware
      */
     public function __invoke(Request $request, Response $response, $next)
     {
-        $html = $this->twig->render('specie/index', []);
+        $this->twig->addFunction(new \Twig_SimpleFunction('stream', function($template, $uri) use ($request) {
+            $html = $this->twig->render($template, [ 'uri' => $uri ]);
 
-        $this->twig->addFunction(new \Twig_SimpleFunction('stream', function($html) use ($request) {
-            $dompdf = new Dompdf();
+            $dompdf = new Dompdf(array('enable_remote' => true));
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'landscape');
             $dompdf->render();
+            $dompdf->stream();
         }, ['is_safe' => ['html']]));
         return $next($request, $response);
     }

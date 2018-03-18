@@ -2,5 +2,5 @@
 
     {{ pdf }}
 
-    {{ stream(dompdf) }}
+    {{ stream('pdf/index.html.twig', uri) }}
 {% endblock %}
