@@ -1,17 +1,32 @@
+.fa {
+    font-size: 30px !important;
+}
+
+.container {
+    margin-bottom: 50px !important;
+}
+
 footer {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 5px;
+    height: 32px;
     z-index: 1000;
     transition: all 0.5s ease-in 0s;
     color: white;
     background-color: #CB4531;
 }
 
-footer:hover {
-    height: initial;
+footer.active {
+    height: 225px;
+}
+
+footer .showFooter {
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 2px solid #EACE36;
 }
 
 footer div.container > div.row > div {
