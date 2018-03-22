@@ -91,6 +91,13 @@ class SpecieController extends BaseController
         }
     }
 
+    public function getSpecie(RequestInterface $request, ResponseInterface $response)
+    {
+        $species = Specie::where('name_latin', 'like', $request->getParam('name_latin') . '%')->get();
+
+        return json_encode($species);
+    }
+
     public function addForm(RequestInterface $request, ResponseInterface $response)
     {
         $edibilities = Edibility::orderBy('status')->get();
@@ -118,12 +125,23 @@ class SpecieController extends BaseController
             $xss_name_french->xss_clean($request->getParam('name_french'));
 
             $other_region = $request->getParam('other_region');
+            $confusion = $request->getParam('confusion');
 
             if (strlen($other_region) > 0) {
                 $xss_other_region = new AntiXSS();
                 $xss_other_region->xss_clean($other_region);
 
                 if ($xss_other_region->isXssFound()) {
+                    $this->flash('error', 'Impossible de traiter le formulaire !');
+                    return $this->redirect($response, 'species.addForm');
+                }
+            }
+
+            if (strlen($confusion) > 0) {
+                $xss_confusion = new AntiXSS();
+                $xss_confusion->xss_clean($confusion);
+
+                if ($xss_confusion->isXssFound()) {
                     $this->flash('error', 'Impossible de traiter le formulaire !');
                     return $this->redirect($response, 'species.addForm');
                 }
@@ -141,8 +159,14 @@ class SpecieController extends BaseController
                 }
 
                 if (strlen($other_region) > 0) {
-                    if (!Validator::stringType()->notEmpty()->validate($request->getParam('other_region'))) {
+                    if (!Validator::stringType()->notEmpty()->validate($other_region)) {
                         $errors['other_region'] = "Veuillez saisir une région valide.";
+                    }
+                }
+
+                if (strlen($confusion) > 0) {
+                    if (!Validator::stringType()->notEmpty()->validate($confusion)) {
+                        $errors['confusion'] = "Veuillez saisir un nom latin valide pour la confusion.";
                     }
                 }
 
@@ -172,6 +196,16 @@ class SpecieController extends BaseController
                         return $this->redirect($response, 'species.addForm');
                     }
 
+                    if (strlen($confusion) > 0) {
+                        var_dump($confusion);
+                        $specie_confusion = Specie::where('name_latin', 'like', strval($confusion) . '%')->first();
+
+                        if (is_null($specie_confusion)) {
+                            $this->flash('error', 'Ce champignon (confusion) est introuvable !');
+                            return $this->redirect($response, 'species.addForm');
+                        }
+                    }
+
                     Specie::create([
                         'name_latin' => $request->getParam('name_latin'),
                         'name_french' => $request->getParam('name_french'),
@@ -179,6 +213,7 @@ class SpecieController extends BaseController
                         'trophic_status_id' => $trophic_status->id,
                         'biotope_id' => $biotope->id,
                         'other_region' => (strlen($other_region) > 0 ? $other_region : null),
+                        'confusion' => (strlen($confusion) > 0 ? $confusion : null),
                         'creator_id' => Session::get('user')->id
                     ]);
 

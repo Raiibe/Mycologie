@@ -67,6 +67,9 @@ $app->group('/species', function() {
     $this->get('[/]', SpecieController::class . ':index')
         ->setName('species');
 
+    $this->get('/specie', SpecieController::class . ':getSpecie')
+        ->setName('species.getSpecie');
+
     $this->get('/{specie_id}', SpecieController::class . ':view')
         ->setName('species.view');
 
