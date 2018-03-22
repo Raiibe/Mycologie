@@ -60,6 +60,10 @@ $app->group('/user', function() {
 $app->group('/species', function() {
     $container = $this->getContainer();
 
+    $this->get('/add', SpecieController::class . ':addForm')
+        ->add(new AuthMiddleware($container))
+        ->setName('species.addForm');
+
     $this->get('[/]', SpecieController::class . ':index')
         ->setName('species');
 
@@ -69,4 +73,8 @@ $app->group('/species', function() {
     $this->get('/delete/{specie_id}', SpecieController::class . ':deleteOne')
         ->add(new AuthMiddleware($container))
         ->setName('species.deleteOne');
+
+    $this->post('/create', SpecieController::class . ':create')
+        ->add(new AuthMiddleware($container))
+        ->setName('species.create');
 });

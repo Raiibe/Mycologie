@@ -1,0 +1,92 @@
+{% extends "layouts/layout.html.twig" %}
+
+{% set title = 'Ajout d\'un champignon' %}
+
+{% block content %}
+    <div class="mt-3">
+        <h2>Ajout d'un champignon</h2>
+        <hr />
+        <form action="{{ path_for('species.create') }}" method="post">
+            {{ csrf() }}
+            <div class="form-group">
+                <label for="name_latin">Nom latin :</label>
+                <input id="name_latin" name="name_latin" type="text" class="{% if flash.errors.name_latin %}has-error{% endif %} form-control" value="{{ persistValues.name_latin }}" placeholder="Nom latin" autofocus required>
+                <div class="has-error">
+                    {% if flash.errors.name_latin %}{{ flash.errors.name_latin }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name_french">Nom français :</label>
+                <input id="name_french" name="name_french" type="text" class="{% if flash.errors.name_french %}has-error{% endif %} form-control" value="{{ persistValues.name_french }}" placeholder="Nom français" required>
+                <div class="has-error">
+                    {% if flash.errors.name_french %}{{ flash.errors.name_french }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="edibility">Comestibilité :</label>
+                <select id="edibility" name="edibility" class="custom-select" required>
+                    <option value="">-- Choisissez une comestibilité --</option>
+                    {% for edibility in edibilities %}
+                        <option value="{{ edibility.id }}">{{ edibility.status }}</option>
+                    {% endfor %}
+                </select>
+                <div class="has-error">
+                    {% if flash.errors.edibility %}{{ flash.errors.edibility }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="trophic_status">Statut trophique :</label>
+                <select id="trophic_status" name="trophic_status" class="custom-select" required>
+                    <option value="">-- Choisissez un statut trophique --</option>
+                    {% for trophic in trophic_status %}
+                        <option value="{{ trophic.id }}">{{ trophic.status }}</option>
+                    {% endfor %}
+                </select>
+                <div class="has-error">
+                    {% if flash.errors.trophic_status %}{{ flash.errors.trophic_status }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="biotope">Biotope :</label>
+                <select id="biotope" name="biotope" class="custom-select" required>
+                    <option value="">-- Choisissez un biotope --</option>
+                    {% for biotope in biotopes %}
+                        <option value="{{ biotope.id }}">{{ biotope.region }}</option>
+                    {% endfor %}
+                </select>
+                <div class="has-error">
+                    {% if flash.errors.biotope %}{{ flash.errors.biotope }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group other_region">
+                <label for="other_region">Autre région :</label>
+                <input id="other_region" name="other_region" type="text" class="{% if flash.errors.other_region %}has-error{% endif %} form-control" value="{{ persistValues.other_region }}" placeholder="Autre région">
+                <div class="has-error">
+                    {% if flash.errors.other_region %}{{ flash.errors.other_region }}{% endif %}
+                </div>
+            </div>
+
+            <input type="submit" class="btn btn-primary btn-slm mb-3" value="Ajouter">
+        </form>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(() => {
+            $('div.other_region').hide()
+            $('input#other_region').prop('required', false).attr('value', '')
+            let select_biotope = $('select#biotope')
+
+            select_biotope.on('change', () => {
+                if (parseInt(select_biotope.val()) === {{ other.id }}) {
+                    $('div.other_region').show()
+                    $('input#other_region').prop('required', true)
+                } else {
+                    $('div.other_region').hide()
+                    $('input#other_region').prop('required', false)
+                }
+            });
+        });
+    </script>
+{% endblock %}

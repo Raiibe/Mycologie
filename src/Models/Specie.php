@@ -15,7 +15,8 @@ class Specie extends Model
         'trophic_status_id',
         'biotope_id',
         'other_region',
-        'confusion'
+        'confusion',
+        'creator_id'
     ];
     public $timestamps = true;
 
