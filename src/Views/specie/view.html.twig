@@ -10,12 +10,12 @@
         <div class="row">
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                 <div class="ml-5">
-                    <p><strong>Nom latin :</strong> {{ specie.name_latin }}</p>
-                    <p><strong>Nom français :</strong> {{ specie.name_french }}</p>
-                    <p><strong>Comestibilité :</strong> {{ specie.getEdibility.status }}</p>
-                    <p><strong>Statut trophique :</strong> {{ specie.getTrophicStatus.status }}</p>
-                    <p><strong>Région :</strong> {% if specie.biotope_id != other.id %}{{ specie.getBiotope.region }}{% else %}{{ specie.other_region }}{% endif %}</p>
-                    <p><strong>Confusion :</strong> {% if specie.confusion %}{{ specie.confusion }}{% else %}Pas de confusion{% endif %}</p>
+                    <p class="mb-4"><strong>Nom latin :</strong> {{ specie.name_latin }}</p>
+                    <p class="mb-4"><strong>Nom français :</strong> {{ specie.name_french }}</p>
+                    <p class="mb-4"><strong>Comestibilité :</strong> {{ specie.getEdibility.status }}</p>
+                    <p class="mb-4"><strong>Statut trophique :</strong> {{ specie.getTrophicStatus.status }}</p>
+                    <p class="mb-4"><strong>Région :</strong> {% if specie.biotope_id != other.id %}{{ specie.getBiotope.region }}{% else %}{{ specie.other_region }}{% endif %}</p>
+                    <p class="mb-4"><strong>Confusion :</strong> {% if specie.confusion %}{{ specie.confusion }}{% else %}Pas de confusion{% endif %}</p>
                 </div>
             </div>
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -30,7 +30,7 @@
             <hr />
 
             <div>
-                <a href="#" class="btn btn-primary btn-slm mr-5">Modifier</a>
+                <a href="#" class="btn btn-primary btn-slm mr-1">Modifier</a>
                 <a href="{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}" class="btn btn-warning">Supprimer</a>
             </div>
         </div>

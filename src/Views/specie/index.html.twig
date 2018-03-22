@@ -47,11 +47,16 @@
                             <p class="card-text"><strong>Comestibilité :</strong> {{ specie.getEdibility.status }}</p>
                             <p class="card-text"><strong>Statut trophique :</strong> {{ specie.getTrophicStatus.status }}</p>
                             <p class="card-text"><strong>Région :</strong> {% if specie.biotope_id != other.id %}{{ specie.getBiotope.region }}{% else %}{{ specie.other_region }}{% endif %}</p>
-                            <a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}" class="btn btn-primary btn-slm">Plus de détails</a>
+                            <div>
+                                <a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}" class="btn btn-primary btn-sm btn-slm mr-2 mb-2">Plus de détails</a>
 
-                            {% if auth.role == 'admin' or auth.id == specie.creator_id %}
-                                <a href="{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}" class="btn btn-warning float-right">Supprimer</a>
-                            {% endif %}
+                                {% if auth.role == 'admin' or auth.id == specie.creator_id %}
+                                    <div class="float-right">
+                                        <a href="#" class="btn btn-primary btn-sm btn-slm mr-1">Modifier</a>
+                                        <a href="{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}" class="btn btn-warning btn-sm">Supprimer</a>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
