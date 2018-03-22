@@ -54,6 +54,7 @@ class SpecieController extends BaseController
 
         $edibilities = Edibility::orderBy('status')->get();
         $biotopes = Biotope::orderBy('region')->get();
+        $other = Biotope::where('region', '=', 'Autre')->first();
         $trophic_status = TrophicStatus::orderBy('status')->get();
 
         $this->render($response, 'specie/index', [
@@ -65,9 +66,26 @@ class SpecieController extends BaseController
             'e' => $e,
             'b' => $b,
             'ts' => $ts,
+            'other' => $other,
             'pagination' => $pagination,
             'QRCodeURI' => $request->getUri() . '/species/'
         ]);
+    }
+
+    public function view(RequestInterface $request, ResponseInterface $response, $args)
+    {
+        $specie = Specie::where('id', '=', $args['specie_id'])->first();
+        $other = Biotope::where('region', '=', 'Autre')->first();
+
+        if (!is_null($specie)) {
+            $this->render($response, 'specie/view', [
+                'specie' => $specie,
+                'other' => $other
+            ]);
+        } else {
+            $this->flash('error', 'Ce champignon n\'existe pas !');
+            $this->redirect($response, 'species');
+        }
     }
 
     public function deleteOne(RequestInterface $request, ResponseInterface $response, $args)

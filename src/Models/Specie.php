@@ -10,7 +10,12 @@ class Specie extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'name_latin',
-        'name_french'
+        'name_french',
+        'edibility_id',
+        'trophic_status_id',
+        'biotope_id',
+        'other_region',
+        'confusion'
     ];
     public $timestamps = true;
 
