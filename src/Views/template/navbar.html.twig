@@ -15,7 +15,7 @@
     </ul>
 
     {% if auth %}
-        <a class="btn btn-light btn-sm mr-1 mb-2" href="{{ path_for('user.view') }}">Mon compte</a>
+        <a class="btn btn-light btn-sm mr-1 mb-2" href="{{ path_for('user.view') }}">{{ auth.first_name }} {{ auth.last_name }}</a>
         <a class="btn btn-danger btn-sm btn-slm-yellow mb-2" href="{{ path_for('user.logout') }}">Déconnexion</a>
     {% else %}
         <a class="btn btn-light btn-sm mr-1 mb-2" href="{{ path_for('user.register.form') }}">Inscription</a>

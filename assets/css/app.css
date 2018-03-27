@@ -11,7 +11,7 @@ footer {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 32px;
+    height: 27px;
     z-index: 1000;
     transition: all 0.5s ease-in 0s;
     color: white;
@@ -24,6 +24,7 @@ footer.active {
 
 footer .showFooter {
     width: 100%;
+    font-size: 25px !important;
     text-align: center;
     cursor: pointer;
     border-bottom: 2px solid #EACE36;
@@ -140,4 +141,9 @@ img#logo-slm-footer {
     color: grey !important;
     border-color: lightgrey !important;
     background-color: lightgrey !important;
+}
+
+img.specie_img {
+    width: 100%;
+    height: auto;
 }

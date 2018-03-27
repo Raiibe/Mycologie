@@ -43,17 +43,20 @@
                     <div class="card col-10 col-xl-5 col-lg-5 col-sm-10 col-md-5 mb-5 ml-5 p-0">
                         <img class="card-img-top" src="http://via.placeholder.com/350x150" alt="{{ specie.name_latin }}">
                         <div class="card-body">
-                            <h5 class="card-title"><a href="#">{{ specie.name_latin }} - {{ specie.name_french }}</a></h5>
+                            <h5 class="card-title"><a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}">{{ specie.name_latin }} - {{ specie.name_french }}</a></h5>
                             <p class="card-text"><strong>Comestibilité :</strong> {{ specie.getEdibility.status }}</p>
                             <p class="card-text"><strong>Statut trophique :</strong> {{ specie.getTrophicStatus.status }}</p>
-                            <p class="card-text"><strong>Région :</strong> {{ specie.getBiotope.region }}</p>
-                            <a href="#" class="btn btn-primary btn-slm">Plus de détails</a>
+                            <p class="card-text"><strong>Région :</strong> {% if specie.biotope_id != other.id %}{{ specie.getBiotope.region }}{% else %}{{ specie.other_region }}{% endif %}</p>
+                            <div>
+                                <a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}" class="btn btn-primary btn-sm btn-slm mr-2 mb-2">Plus de détails</a>
 
-                            {% if auth.role == 'admin' or auth.id == specie.creator_id %}
-                                <a href="{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}" class="btn btn-warning float-right">Supprimer</a>
-                            {% endif %}
-
-                            <!-- <img src="{ qr_code(specie.id) }}" /> -->
+                                {% if auth.role == 'admin' or auth.id == specie.creator_id %}
+                                    <div class="float-right">
+                                        <a href="#" class="btn btn-primary btn-sm btn-slm mr-1">Modifier</a>
+                                        <a href="{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}" class="btn btn-warning btn-sm">Supprimer</a>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
