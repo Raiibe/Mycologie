@@ -98,24 +98,31 @@
                 let name = input_confusion.val()
                 if (name.length > 0) {
                     this.getSpecie(input_confusion, name)
+                } else {
+                    $('ul.ul_confusion').remove()
                 }
             });
 
             getSpecie = (input, name) => {
+                let ul_remove = $('ul.ul_confusion')
                 $.get("{{ path_for('species.getSpecie') }}?name_latin=" + name, (data) => {
-                    let ul = $('<ul>').addClass('list-group ul_confusion').css('height', '200px').css('overflow', 'scroll')
-                    JSON.parse(data).forEach((specie) => {
-                        ul.append(
-                            $('<li>').addClass('list-group-item').append(
-                                $('<p>').innerHTML = specie.name_latin
-                            ).css('cursor', 'pointer').on('click', () => {
-                                console.log(input)
-                                input.val(specie.name_latin)
-                                $('ul.ul_confusion').remove()
-                            })
-                        )
-                    })
-                    input.after(ul)
+                    data = JSON.parse(data)
+                    if (data.length > 0) {
+                        let ul = $('<ul>').addClass('list-group ul_confusion').css('max-height', '200px').css('overflow', 'scroll')
+                        data.forEach((specie) => {
+                            ul.append(
+                                $('<li>').addClass('list-group-item').append(
+                                    $('<p>').innerHTML = specie.name_latin
+                                ).css('cursor', 'pointer').on('click', () => {
+                                    console.log(input)
+                                    input.val(specie.name_latin)
+                                    $('ul.ul_confusion').remove()
+                                })
+                            )
+                        })
+                        input.after(ul)
+                    }
+                    ul_remove.remove()
                 });
             };
         });
