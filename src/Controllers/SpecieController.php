@@ -230,6 +230,158 @@ class SpecieController extends BaseController
         }
     }
 
+    public function editForm(RequestInterface $request, ResponseInterface $response, $args)
+    {
+        $specie = Specie::where('id', '=', $args['specie_id'])->first();
+
+        if (!is_null($specie)) {
+            $edibilities = Edibility::orderBy('status')->get();
+            $biotopes = Biotope::orderBy('region')->get();
+            $trophic_status = TrophicStatus::orderBy('status')->get();
+            $other = Biotope::where('region', '=', 'Autre')->first();
+
+            $this->render($response, 'specie/edit', [
+                'specie' => $specie,
+                'edibilities' => $edibilities,
+                'biotopes' => $biotopes,
+                'trophic_status' => $trophic_status,
+                'other' => $other
+            ]);
+        } else {
+            $this->flash('error', 'Ce champignon n\'existe pas !');
+            return $this->redirect($response, 'species');
+        }
+    }
+
+    public function update(RequestInterface $request, ResponseInterface $response, $args)
+    {
+        $specie = Specie::where('id', '=', $args['specie_id'])->first();
+
+        if (!is_null($specie)) {
+            if (false === $request->getAttribute('csrf_status')) {
+                $this->flash('error', 'Une erreur est survenue pendant l\'envoi du formulaire !');
+                return $this->redirect($response, 'species.addForm', []);
+            } else {
+                $xss_name_latin = new AntiXSS();
+                $xss_name_latin->xss_clean($request->getParam('name_latin'));
+                $xss_name_french = new AntiXSS();
+                $xss_name_french->xss_clean($request->getParam('name_french'));
+
+                $other_region = $request->getParam('other_region');
+                $confusion = $request->getParam('confusion');
+
+                if (strlen($other_region) > 0) {
+                    $xss_other_region = new AntiXSS();
+                    $xss_other_region->xss_clean($other_region);
+
+                    if ($xss_other_region->isXssFound()) {
+                        $this->flash('error', 'Impossible de traiter le formulaire !');
+                        return $this->redirect($response, 'species.addForm');
+                    }
+                }
+
+                if (strlen($confusion) > 0) {
+                    $xss_confusion = new AntiXSS();
+                    $xss_confusion->xss_clean($confusion);
+
+                    if ($xss_confusion->isXssFound()) {
+                        $this->flash('error', 'Impossible de traiter le formulaire !');
+                        return $this->redirect($response, 'species.addForm');
+                    }
+                }
+
+                if (!$xss_name_latin->isXssFound() && !$xss_name_french->isXssFound()) {
+                    $errors = [];
+
+                    if (!Validator::stringType()->notEmpty()->validate($request->getParam('name_latin'))) {
+                        $errors['name_latin'] = "Veuillez saisir un nom latin valide.";
+                    }
+
+                    if (!Validator::stringType()->notEmpty()->validate($request->getParam('name_french'))) {
+                        $errors['name_french'] = "Veuillez saisir un nom français valide.";
+                    }
+
+                    if (strlen($other_region) > 0) {
+                        if (!Validator::stringType()->notEmpty()->validate($other_region)) {
+                            $errors['other_region'] = "Veuillez saisir une région valide.";
+                        }
+                    }
+
+                    if (strlen($confusion) > 0) {
+                        if (!Validator::stringType()->notEmpty()->validate($confusion)) {
+                            $errors['confusion'] = "Veuillez saisir un nom latin valide pour la confusion.";
+                        }
+                    }
+
+                    if (empty($errors)) {
+                        $specie_name_latin = Specie::where('name_latin', '=', $request->getParam('name_latin'))->first();
+                        $edibility = Edibility::where('id', '=', $request->getParam('edibility'))->first();
+                        $trophic_status = TrophicStatus::where('id', '=', $request->getParam('trophic_status'))->first();
+                        $biotope = Biotope::where('id', '=', $request->getParam('biotope'))->first();
+
+                        if (!is_null($specie_name_latin)) {
+                            $this->flash('error', 'Ce nom latin existe déjà !');
+                            return $this->redirect($response, 'species.addForm');
+                        }
+
+                        if (is_null($edibility)) {
+                            $this->flash('error', 'Cette comestibilité est introuvable !');
+                            return $this->redirect($response, 'species.addForm');
+                        }
+
+                        if (is_null($trophic_status)) {
+                            $this->flash('error', 'Ce statut trophique est introuvable !');
+                            return $this->redirect($response, 'species.addForm');
+                        }
+
+                        if (is_null($biotope)) {
+                            $this->flash('error', 'Cette région est introuvable !');
+                            return $this->redirect($response, 'species.addForm');
+                        }
+
+                        if (strlen($confusion) > 0) {
+                            var_dump($confusion);
+                            $specie_confusion = Specie::where('name_latin', 'like', strval($confusion) . '%')->first();
+
+                            if (is_null($specie_confusion)) {
+                                $this->flash('error', 'Ce champignon (confusion) est introuvable !');
+                                return $this->redirect($response, 'species.addForm');
+                            }
+                        }
+
+                        if ($specie->name_latin != $request->getParam('name_latin') || $specie->name_french != $request->getParam('name_french') || $specie->edibility_id != $edibility->id || $specie->trophic_status_id != $trophic_status->id || $specie->biotope_id != $biotope->id || $specie->other_region != (strlen($other_region) > 0 ? $other_region : null) || $specie->confusion != (strlen($confusion) > 0 ? $confusion : null)) {
+
+                            $specie->name_latin = $request->getParam('name_latin');
+                            $specie->name_french = $request->getParam('name_french');
+                            $specie->edibility_id = $edibility->id;
+                            $specie->trophic_status_id = $trophic_status->id;
+                            $specie->biotope_id = $biotope->id;
+                            $specie->other_region = (strlen($other_region) > 0 ? $other_region : null);
+                            $specie->confusion = (strlen($confusion) > 0 ? $confusion : null);
+
+                            $specie->save();
+
+                            $this->flash('success', "Champignon modifié avec succès.");
+                            return $this->redirect($response, 'index');
+                        } else {
+                            $this->flash('info', "Champignon non mis à jour, valeurs identiques.");
+                            return $this->redirect($response, 'species');
+                        }
+                    } else {
+                        $this->flash('errors', $errors);
+                        return $this->redirect($response, 'species.addForm', []);
+                    }
+                } else {
+                    $this->flash('error', 'Impossible de traiter le formulaire !');
+                    return $this->redirect($response, 'species.addForm');
+                }
+            }
+        } else {
+            $this->flash('error', 'Ce champignon n\'existe pas !');
+            return $this->redirect($response, 'species');
+        }
+    }
+
     public function deleteOne(RequestInterface $request, ResponseInterface $response, $args)
     {
         $specie = Specie::where('id', '=', $args['specie_id'])->first();

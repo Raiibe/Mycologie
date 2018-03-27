@@ -52,7 +52,7 @@
 
                                 {% if auth.role == 'admin' or auth.id == specie.creator_id %}
                                     <div class="float-right">
-                                        <a href="#" class="btn btn-primary btn-sm btn-slm mr-1">Modifier</a>
+                                        <a href="{{ path_for('species.editForm', { 'specie_id': specie.id }) }}" class="btn btn-primary btn-sm btn-slm mr-1">Modifier</a>
                                         <a href="{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}" class="btn btn-warning btn-sm">Supprimer</a>
                                     </div>
                                 {% endif %}

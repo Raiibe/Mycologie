@@ -30,7 +30,7 @@
             <hr />
 
             <div>
-                <a href="#" class="btn btn-primary btn-slm mr-1">Modifier</a>
+                <a href="{{ path_for('species.editForm', { 'specie_id': specie.id }) }}" class="btn btn-primary btn-slm mr-3">Modifier</a>
                 <a href="{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}" class="btn btn-warning">Supprimer</a>
             </div>
         </div>
