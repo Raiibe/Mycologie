@@ -127,6 +127,12 @@ img#logo-slm-footer {
     background-color: white !important;
 }
 
+.btn-slm-white:hover {
+    color: white !important;
+    border-color: #CB4531 !important;
+    background-color: #CB4531 !important;
+}
+
 .pagination li.page-item a.page-link {
     color: #CB4531 !important;
 }
@@ -146,4 +152,8 @@ img#logo-slm-footer {
 img.specie_img {
     width: 100%;
     height: auto;
+}
+
+.fa-plus-circle {
+    font-size: 16px !important;
 }
