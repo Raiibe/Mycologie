@@ -17,8 +17,6 @@ class SpecieController extends BaseController
 {
     public function index(RequestInterface $request, ResponseInterface $response)
     {
-        $perPage = 10;
-
         $param = $request->getParam('order');
         $order = 'name_latin';
 
@@ -43,11 +41,11 @@ class SpecieController extends BaseController
 
         $total = count($species);
         $page = (!is_null($request->getParam('page')) ? ($request->getParam('page') - 1) : 0);
-        $pagination = Paginator::paginate($perPage, $total, $request->getParam('page'));
+        $pagination = Paginator::paginate(Paginator::$perPage, $total, $request->getParam('page'));
         $page = (($page > ($pagination['lastPage'] - 1)) ? ($pagination['lastPage'] - 1) : $page);
-        $offset = ($perPage * $page);
+        $offset = (Paginator::$perPage * $page);
 
-        $species = Specie::limit($perPage)
+        $species = Specie::limit(Paginator::$perPage)
             ->offset($offset)
             ->where('edibility_id', 'like', (!is_null($edibility) ? $edibility->id : '%'))
             ->where('biotope_id', 'like', (!is_null($biotope) ? $biotope->id : '%'))

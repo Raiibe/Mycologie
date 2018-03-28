@@ -52,6 +52,16 @@ nav.navbar {
     background-color: #CB4531 !important;
 }
 
+div.dropdown-menu a.dropdown-item:hover {
+    color: white;
+    background-color: #CB4531;
+}
+
+div.dropdown-menu a.dropdown-item.active {
+    color: #CB4531;
+    background-color: white;
+}
+
 ul.navbar-nav {
     margin-top: 4px !important;
 }

@@ -17,4 +17,8 @@ class User extends Model
     ];
     public $timestamps = true;
 
+    public function getSpecies()
+    {
+        return $this->hasMany(Specie::class, 'creator_id');
+    }
 }

@@ -31,6 +31,10 @@ $app->group('/user', function() {
         ->add(new AuthMiddleware($container))
         ->setName('user.view');
 
+    $this->get('/species', UserController::class . ':species')
+        ->add(new AuthMiddleware($container))
+        ->setName('user.species');
+
     $this->get('/logout', UserController::class . ':logout')
         ->add(new AuthMiddleware($container))
         ->setName('user.logout');

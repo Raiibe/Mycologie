@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Utils\Paginator;
 use App\Utils\Session;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -142,6 +143,29 @@ class UserController extends BaseController
     {
         $user = User::where('id', '=', Session::get('user')->id)->first();
         $this->render($response, 'user/view', ['user' => $user]);
+    }
+
+    public function species(RequestInterface $request, ResponseInterface $response)
+    {
+        $user = User::where('id', '=', Session::get('user')->id)->first();
+        $species = $user->getSpecies()->get();
+
+        $total = count($species);
+        $page = (!is_null($request->getParam('page')) ? ($request->getParam('page') - 1) : 0);
+        $pagination = Paginator::paginate(Paginator::$perPage, $total, $request->getParam('page'));
+        $page = (($page > ($pagination['lastPage'] - 1)) ? ($pagination['lastPage'] - 1) : $page);
+        $offset = (Paginator::$perPage * $page);
+
+        $species = $user->getSpecies()
+            ->limit(Paginator::$perPage)
+            ->offset($offset)
+            ->orderBy('name_latin')
+            ->get();
+
+        $this->render($response, 'user/species', [
+            'species' => $species,
+            'pagination' => $pagination
+        ]);
     }
 
     public function logout(RequestInterface $request, ResponseInterface $response)
