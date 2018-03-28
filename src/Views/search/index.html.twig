@@ -66,10 +66,12 @@
 
             getSpecie = (div, name, input) => {
                 let ul_remove = $('ul.ul_search')
+                let ul = $('<ul>').addClass('list-group ul_search').css('max-height', '200px').css('overflow', 'scroll')
                 $.get("{{ path_for('species.getSpecie') }}?name_latin=" + name, (data) => {
                     data = JSON.parse(data)
+
+                                    console.log(data)
                     if (data.length > 0) {
-                        let ul = $('<ul>').addClass('list-group ul_search').css('max-height', '200px').css('overflow', 'scroll')
                         data.forEach((specie) => {
                             ul.append(
                                 $('<li>').addClass('list-group-item').append(
@@ -85,7 +87,27 @@
                     }
                     ul_remove.remove()
                 });
+                $.get("{{ path_for('species.getSpecieFr') }}?name_french=" + name, (data) => {
+                    data = JSON.parse(data)
+                                    console.log(data)
+                    if (data.length > 0) {
+                        data.forEach((specie) => {
+                            ul.append(
+                                $('<li>').addClass('list-group-item').append(
+                                    $('<p>').innerHTML = specie.name_french
+                                ).css('cursor', 'pointer').on('click', () => {
+                                    console.log(input)
+                                    input.val(specie.name_latin)
+                                    $('ul.ul_search').remove()
+                                })
+                            )
+                        })
+                        div.append(ul)
+                    }
+                    ul_remove.remove()
+                });
             };
+
         });
     </script>
 {% endblock %}

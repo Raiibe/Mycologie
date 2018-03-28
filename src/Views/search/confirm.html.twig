@@ -21,24 +21,24 @@
         
         {% if specie %}
             <div class="row mt-4">
-                <div class="card col-10 col-xl-5 col-lg-5 col-sm-10 col-md-5 mb-5 ml-5 p-0">
-                    <img class="card-img-top" src="http://via.placeholder.com/350x150" alt="{{ specie.name_latin }}">
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}">{{ specie.name_latin }} - {{ specie.name_french }}</a></h5>
-                        <p class="card-text"><strong>Comestibilité :</strong> {{ specie.getEdibility.status }}</p>
-                        <p class="card-text"><strong>Statut trophique :</strong> {{ specie.getTrophicStatus.status }}</p>
-                        <p class="card-text"><strong>Région :</strong> {% if specie.biotope_id != other.id %}{{ specie.getBiotope.region }}{% else %}{{ specie.other_region }}{% endif %}</p>
-                        <div>
-                            <a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}" class="btn btn-primary btn-sm btn-slm mr-2 mb-2">Plus de détails</a>
-                            {% if auth.role == 'admin' or auth.id == specie.creator_id %}
-                                <div class="float-right">
-                                    <a href="#" class="btn btn-primary btn-sm btn-slm mr-1">Modifier</a>
-                                    <a href="{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}" class="btn btn-warning btn-sm">Supprimer</a>
-                                </div>
-                            {% endif %}
+                    <div class="card col-10 col-xl-5 col-lg-5 col-sm-10 col-md-5 mb-5 ml-5 p-0">
+                        <img class="card-img-top" src="http://via.placeholder.com/350x150" alt="{{ specie.name_latin }}">
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}">{{ specie.name_latin }} - {{ specie.name_french }}</a></h5>
+                            <p class="card-text"><strong>Comestibilité :</strong> {{ specie.getEdibility.status }}</p>
+                            <p class="card-text"><strong>Statut trophique :</strong> {{ specie.getTrophicStatus.status }}</p>
+                            <p class="card-text"><strong>Région :</strong> {% if specie.biotope_id != other.id %}{{ specie.getBiotope.region }}{% else %}{{ specie.other_region }}{% endif %}</p>
+                            <div>
+                                <a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}" class="btn btn-primary btn-sm btn-slm mr-2 mb-2">Plus de détails</a>
+                                {% if auth.role == 'admin' or auth.id == specie.creator_id %}
+                                    <div class="float-right">
+                                        <a href="#" class="btn btn-primary btn-sm btn-slm mr-1">Modifier</a>
+                                        <a href="{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}" class="btn btn-warning btn-sm">Supprimer</a>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                </div>
             </div>
         {% else %}
             <div class="alert alert-info mt-4" role="alert">
@@ -66,10 +66,12 @@
 
             getSpecie = (div, name, input) => {
                 let ul_remove = $('ul.ul_search')
+                let ul = $('<ul>').addClass('list-group ul_search').css('max-height', '200px').css('overflow', 'scroll')
                 $.get("{{ path_for('species.getSpecie') }}?name_latin=" + name, (data) => {
                     data = JSON.parse(data)
+
+                                    console.log(data)
                     if (data.length > 0) {
-                        let ul = $('<ul>').addClass('list-group ul_search').css('max-height', '200px').css('overflow', 'scroll')
                         data.forEach((specie) => {
                             ul.append(
                                 $('<li>').addClass('list-group-item').append(
@@ -85,7 +87,27 @@
                     }
                     ul_remove.remove()
                 });
+                $.get("{{ path_for('species.getSpecieFr') }}?name_french=" + name, (data) => {
+                    data = JSON.parse(data)
+                                    console.log(data)
+                    if (data.length > 0) {
+                        data.forEach((specie) => {
+                            ul.append(
+                                $('<li>').addClass('list-group-item').append(
+                                    $('<p>').innerHTML = specie.name_french
+                                ).css('cursor', 'pointer').on('click', () => {
+                                    console.log(input)
+                                    input.val(specie.name_latin)
+                                    $('ul.ul_search').remove()
+                                })
+                            )
+                        })
+                        div.append(ul)
+                    }
+                    ul_remove.remove()
+                });
             };
+
         });
     </script>
 {% endblock %}

@@ -96,6 +96,13 @@ class SpecieController extends BaseController
         return json_encode($species);
     }
 
+    public function getSpecieFr(RequestInterface $request, ResponseInterface $response)
+    {
+        $species = Specie::where('name_french', 'like', $request->getParam('name_french') . '%')->get();
+
+        return json_encode($species);
+    }
+
     public function addForm(RequestInterface $request, ResponseInterface $response)
     {
         $edibilities = Edibility::orderBy('status')->get();

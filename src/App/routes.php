@@ -75,6 +75,9 @@ $app->group('/species', function() {
     $this->get('/specie', SpecieController::class . ':getSpecie')
         ->setName('species.getSpecie');
 
+    $this->get('/specieFr', SpecieController::class . ':getSpecieFr')
+        ->setName('species.getSpecieFr');
+
     $this->get('/{specie_id}', SpecieController::class . ':view')
         ->setName('species.view');
 
