@@ -34,4 +34,9 @@ class Specie extends Model
     {
         return $this->belongsTo(TrophicStatus::class, 'trophic_status_id');
     }
+
+    public function getCreator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
 }
