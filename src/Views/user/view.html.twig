@@ -2,6 +2,8 @@
 
 {% set title = 'Mon compte' %}
 
+{% set route = 'user.view' %}
+
 {% block content %}
     <div class="mt-3">
         <h2>Mon compte</h2>
@@ -23,6 +25,13 @@
 
             <a class="btn btn-primary btn-slm mb-3" href="{{ path_for('user.edit') }}">Modifier</a>
         </div>
+    </div>
+
+    <div class="mt-3">
+        <h2>Mes champignons</h2>
+        <hr />
+
+        <a class="btn btn-primary btn-slm mb-3" href="{{ path_for('user.species') }}">Voir les espèces</a>
     </div>
 
     <div class="mt-3">

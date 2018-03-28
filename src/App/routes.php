@@ -32,6 +32,10 @@ $app->group('/user', function() {
         ->add(new AuthMiddleware($container))
         ->setName('user.view');
 
+    $this->get('/species', UserController::class . ':species')
+        ->add(new AuthMiddleware($container))
+        ->setName('user.species');
+
     $this->get('/logout', UserController::class . ':logout')
         ->add(new AuthMiddleware($container))
         ->setName('user.logout');
@@ -73,6 +77,14 @@ $app->group('/species', function() {
 
     $this->get('/{specie_id}', SpecieController::class . ':view')
         ->setName('species.view');
+
+    $this->get('/{specie_id}/edit', SpecieController::class . ':editForm')
+        ->add(new AuthMiddleware($container))
+        ->setName('species.editForm');
+
+    $this->post('/{specie_id}/update', SpecieController::class . ':update')
+        ->add(new AuthMiddleware($container))
+        ->setName('species.update');
 
     $this->get('/delete/{specie_id}', SpecieController::class . ':deleteOne')
         ->add(new AuthMiddleware($container))

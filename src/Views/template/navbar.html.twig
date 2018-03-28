@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="{{ path_for('index') }}"><img id="logo-slm" src="{{ base_url() }}/assets/img/Logo_SLM.png"> {{ picker('app.name') }}</a>
-  <button class="navbar-toggler mb-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <a class="navbar-brand" href="{{ path_for('index') }}"><img id="logo-slm" src="{{ base_url() }}/assets/img/Logo_SLM.png"> {{ picker('app.name') }}</a>
+    <button class="navbar-toggler mb-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -17,12 +17,22 @@
         </li>
     </ul>
 
-    {% if auth %}
-        <a class="btn btn-light btn-sm mr-1 mb-2" href="{{ path_for('user.view') }}">{{ auth.first_name }} {{ auth.last_name }}</a>
-        <a class="btn btn-danger btn-sm btn-slm-yellow mb-2" href="{{ path_for('user.logout') }}">Déconnexion</a>
-    {% else %}
-        <a class="btn btn-light btn-sm mr-1 mb-2" href="{{ path_for('user.register.form') }}">Inscription</a>
-        <a class="btn btn-success btn-sm mb-2" href="{{ path_for('user.login.form') }}">Connexion</a>
-    {% endif %}
+        {% if auth %}
+            {% if auth.role == 'admin' %}
+                <a class="btn btn-light btn-sm mr-1 mb-2" href="{{ path_for('user.view') }}">{{ auth.first_name }} {{ auth.last_name }}</a>
+            {% else %}
+                <div class="dropdown mr-1 mb-2">
+                    <a class="btn btn-light btn-sm dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ auth.first_name }} {{ auth.last_name }}</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item {% if route == 'user.view' %}active{% endif %}" href="{{ path_for('user.view') }}">Mon compte</a>
+                        <a class="dropdown-item {% if route == 'user.species' %}active{% endif %}" href="{{ path_for('user.species') }}">Mes champignons</a>
+                    </div>
+                </div>
+            {% endif %}
+            <a class="btn btn-danger btn-sm btn-slm-yellow mb-2" href="{{ path_for('user.logout') }}">Déconnexion</a>
+        {% else %}
+            <a class="btn btn-light btn-sm mr-1 mb-2" href="{{ path_for('user.register.form') }}">Inscription</a>
+            <a class="btn btn-success btn-sm mb-2" href="{{ path_for('user.login.form') }}">Connexion</a>
+        {% endif %}
     </div>
 </nav>
