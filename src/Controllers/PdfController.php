@@ -16,6 +16,7 @@ class PdfController extends BaseController
         $species_month_recent = Specie::whereBetween('created_at', [date('Y-m-1'), date('Y-m-t')])
             ->get();
 
+
         $this->render($response, 'app/pdf', [
             'species_month_recent' => $species_month_recent
         ]);

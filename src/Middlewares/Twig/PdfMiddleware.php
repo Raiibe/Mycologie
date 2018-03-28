@@ -5,6 +5,7 @@ namespace App\Middlewares\Twig;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Dompdf\Dompdf;
+use App\Controllers\PdfController;
 
 /**
  * class PickerMiddleware.php
@@ -39,13 +40,17 @@ class PdfMiddleware
      */
     public function __invoke(Request $request, Response $response, $next)
     {
-        $html = $this->twig->render('specie/index', []);
 
-        $this->twig->addFunction(new \Twig_SimpleFunction('stream', function($html) use ($request) {
+
+        $this->twig->addFunction(new \Twig_SimpleFunction('stream', function($route) use ($request) {
+            $html = $this->twig->render($route, []);
+
+
             $dompdf = new Dompdf();
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'landscape');
             $dompdf->render();
+            $dompdf->stream();
         }, ['is_safe' => ['html']]));
         return $next($request, $response);
     }
