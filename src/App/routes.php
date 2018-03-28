@@ -2,6 +2,7 @@
 use App\Controllers\AppController;
 
 use App\Controllers\SpecieController;
+use App\Controllers\SearchController;
 use App\Controllers\UserController;
 use App\Middlewares\GuestMiddleware;
 use App\Middlewares\AuthMiddleware;
@@ -92,4 +93,14 @@ $app->group('/species', function() {
     $this->post('/create', SpecieController::class . ':create')
         ->add(new AuthMiddleware($container))
         ->setName('species.create');
+});
+
+$app->group('/search', function() {
+    $container = $this->getContainer();
+
+    $this->get('[/]', SearchController::class . ':index')
+        ->setName('search');
+
+    $this->post('/confirm', SearchController::class . ':search')
+        ->setName('search.confirm');
 });
