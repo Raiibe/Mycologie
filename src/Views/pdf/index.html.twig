@@ -14,7 +14,7 @@
     <body>
 
 
-        {% for i in 0..200 %}
+        {% for i in 0..50 %}
             {% if i%2 == 0 and i != 0 and i%4 != 0 %}
                 <br>
             {% endif %}
@@ -68,7 +68,13 @@
                 </div>
 
                 <div class="data">
-                    <p>Biotope : <b>{{ species[i].getBiotope.region }}</b></p>
+                    <p>Biotope : <b>
+                            {% if  species[i].getBiotope.region == "Autre" %}
+                            Non renseigné
+                            {% else %}
+                            {{ species[i].getBiotope.region }}
+                            {% endif %}
+                        </b></p>
                     <p>Pédologie : <b>{{ species[i].getTrophicStatus.status }}</b></p>
                     <p>Confusion : <strong><i>{{ species[i].confusion }}</i></strong></p>
                 </div>
