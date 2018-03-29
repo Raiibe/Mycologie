@@ -8,7 +8,7 @@ return array(
 		'driver' => 'mysql',
 		'host' => 'localhost',
 		'user' => 'root',
-		'pass' => 'root',
+		'pass' => 'toor',
 		'dbName' => 'mycologie',
 		'port' => 3306,
         'charset' => 'utf8',

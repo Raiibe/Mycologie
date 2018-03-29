@@ -1,6 +1,7 @@
 <?php
 use App\Controllers\AppController;
 
+use App\Controllers\PdfController;
 use App\Controllers\SpecieController;
 use App\Controllers\SearchController;
 use App\Controllers\UserController;
@@ -99,11 +100,29 @@ $app->group('/species', function() {
 });
 
 $app->group('/search', function() {
-    $container = $this->getContainer();
-
     $this->get('[/]', SearchController::class . ':index')
         ->setName('search');
 
     $this->post('/confirm', SearchController::class . ':search')
         ->setName('search.confirm');
+});
+
+$app->group('/pdf', function() {
+    $container = $this->getContainer();
+
+    $this->get('/create', PdfController::class . ':create')
+        ->add(new AuthMiddleware($container))
+        ->setName('pdf.create');
+
+    $this->get('/add/{specie_id}', PdfController::class . ':add')
+        ->add(new AuthMiddleware($container))
+        ->setName('pdf.add');
+
+    $this->get('/listPreview', PdfController::class . ':listPreview')
+        ->add(new AuthMiddleware($container))
+        ->setName('pdf.listPreview');
+
+    $this->get('/listDownload', PdfController::class . ':listDownload')
+        ->add(new AuthMiddleware($container))
+        ->setName('pdf.listDownload');
 });
