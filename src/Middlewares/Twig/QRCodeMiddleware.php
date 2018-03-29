@@ -39,8 +39,8 @@ class QRCodeMiddleware
      */
     public function __invoke(Request $request, Response $response, $next)
     {
-        $this->twig->addFunction(new \Twig_SimpleFunction('qr_code', function($name) use ($request) {
-            return QRCodeGenerator::get($request->getUri(), $name);
+        $this->twig->addFunction(new \Twig_SimpleFunction('qr_code', function($uri,$name) use ($request) {
+            return QRCodeGenerator::get($uri, $name);
         }, ['is_safe' => ['html']]));
         return $next($request, $response);
     }
