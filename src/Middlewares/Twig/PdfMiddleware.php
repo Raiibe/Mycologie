@@ -1,12 +1,9 @@
 <?php
-
 namespace App\Middlewares\Twig;
-
+use Dompdf\Options;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Dompdf\Dompdf;
-use App\Controllers\PdfController;
-
 /**
  * class PickerMiddleware.php
  *
@@ -19,9 +16,7 @@ use App\Controllers\PdfController;
  */
 class PdfMiddleware
 {
-
     private $twig;
-
     /**
      * PickerMiddleware constructor.
      * @param \Twig_Environment $twig
@@ -30,7 +25,6 @@ class PdfMiddleware
     {
         $this->twig = $twig;
     }
-
     /**
      * Invoke du middleware
      * @param Request $request
@@ -41,12 +35,12 @@ class PdfMiddleware
     public function __invoke(Request $request, Response $response, $next)
     {
 
+        $this->twig->addFunction(new \Twig_SimpleFunction('stream', function($template, $uri, $species) use ($request) {
+            $html = $this->twig->render($template, [ 'uri' => $uri , 'species' => $species]);
+            $options = new Options();
+            $options->set( 'isRemoteEnabled', TRUE );
+            $dompdf = new Dompdf($options);
 
-        $this->twig->addFunction(new \Twig_SimpleFunction('stream', function($route) use ($request) {
-            $html = $this->twig->render($route, []);
-
-
-            $dompdf = new Dompdf();
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'landscape');
             $dompdf->render();
@@ -54,5 +48,4 @@ class PdfMiddleware
         }, ['is_safe' => ['html']]));
         return $next($request, $response);
     }
-
 }

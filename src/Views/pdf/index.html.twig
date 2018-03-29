@@ -1,0 +1,156 @@
+{% set title = 'Pdf' %}
+
+{% set route = 'pdf' %}
+
+{% block content %}
+    <!doctype html>
+    <html class="no-js" lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+    </head>
+    <body>
+
+
+        {% for i in 0..200 %}
+            {% if i%2 == 0 and i != 0 and i%4 != 0 %}
+                <br>
+            {% endif %}
+            {% if i == 0  %}
+                <br><br><br>
+            {% endif %}
+            {% if i%4 == 0 and i != 0%}
+                <br><br><br>
+            {% endif %}
+            <div class="specie">
+                <div class="images">
+                    <div class="logo"></div>
+                    <img src="{{ qr_code(1) }}" />
+                </div>
+
+                <h3>Société Lorraine de Mycologie</h3>
+                <hr/>
+                <div>
+                    <p class="edibility"><strong><i>{{ species[i].getEdibility.status }}</i></strong>
+                    </p>
+
+                    {% if species[i].getEdibility.id  == 1 %}
+                        <div class="dot-red"></div>
+                    {% endif %}
+                    {% if species[i].getEdibility.id == 2 %}
+                        <div class="dot-orange"></div>
+                    {% endif %}
+                    {% if species[i].getEdibility.id  == 3 %}
+                        <div class="dot-orange"></div>
+                        <div class="dot-blue"></div>
+                    {% endif %}
+                    {% if species[i].getEdibility.id  == 4 %}
+                        <div class="dot-blue"></div>
+                    {% endif %}
+                    {% if species[i].getEdibility.id  == 5 %}
+                        <div class="dot-grey"></div>
+                    {% endif %}
+                    {% if species[i].getEdibility.id  == 6 %}
+                        <div class="dot-blue"></div>
+                        <div class="dot-orange"></div>
+                    {% endif %}
+                    {% if species[i].getEdibility.id  == 7 %}
+                        <div class="dot-suspect">S</div>
+                    {% endif %}
+
+
+                </div>
+                <div class="specie-name">
+                    <h2>{{ species[i].name_latin }}</h2>
+                    <h4>{{ species[i].name_french }}</h4>
+                </div>
+
+                <div class="data">
+                    <p>Biotope : <b>{{ species[i].getBiotope.region }}</b></p>
+                    <p>Pédologie : <b>{{ species[i].getTrophicStatus.status }}</b></p>
+                    <p>Confusion : <strong><i>{{ species[i].confusion }}</i></strong></p>
+                </div>
+            </div>
+        {% endfor %}
+    </body>
+    </html>
+{% endblock %}
+
+    {% block css %}
+        <style>
+            .dot-red, .dot-blue, .dot-grey, .dot-orange, .dot-suspect{
+                width: 30px;
+                height: 30px;
+                border-radius: 15px;
+                float : right;
+                vertical-align: middle;
+            }
+
+            .dot-orange{
+                background: orange;
+            }
+            .dot-red{
+                 background: red;
+             }
+            .dot-blue{
+                background: blue;
+            }
+            .dot-grey{
+                background: lightgray;
+            }
+            .dot-suspect{
+                background: lightgrey;
+                color : black;
+            }
+
+            .edibility{
+                text-align : right;
+                width : 100%;
+                margin-right : 60px;
+                display : inline-block;
+                vertical-align: middle;
+                margin-bottom : 0;
+            }
+
+
+            @page {
+                padding :0;
+                margin: 0 0 0;
+            }
+            .logo {
+                width : 60px;
+                height : 70px;
+                background-image: url("/assets/img/Logo_SLM.jpg");
+            }
+
+            .specie {
+                width: 535px;
+                height : 350px;
+                border : 1px solid black;
+                display: inline-block;
+                text-align: center;
+                margin : 0;
+                padding : 0 10px;
+            }
+
+            .images {
+                width: 60px;
+                float : left;
+                position: relative;
+                padding : 10px 0;
+                margin : 0;
+                height : 150px;
+            }
+
+            .images > img {
+                width: 100%;
+                height: auto;
+            }
+
+            .data{
+                text-align : left;
+            }
+        </style>
+    {% endblock %}
