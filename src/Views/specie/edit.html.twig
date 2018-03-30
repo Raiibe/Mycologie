@@ -117,7 +117,6 @@
                                 $('<li>').addClass('list-group-item').append(
                                     $('<p>').innerHTML = specie.name_latin
                                 ).css('cursor', 'pointer').on('click', () => {
-                                    console.log(input)
                                     input.val(specie.name_latin)
                                     $('ul.ul_confusion').remove()
                                 })

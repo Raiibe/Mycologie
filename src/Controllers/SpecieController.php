@@ -17,60 +17,108 @@ class SpecieController extends BaseController
 {
     public function index(RequestInterface $request, ResponseInterface $response)
     {
-        $param = $request->getParam('order');
-        $order = 'name_latin';
+        $search = $request->getParam('search');
 
-        if (!is_null($param)) {
-            if ($param == 'name_latin' || $param == 'name_french') {
-                $order = $param;
+        if (!is_null($search)) {
+            $xss_search = new AntiXSS();
+            $xss_search->xss_clean($search);
+
+            if (!$xss_search->isXssFound()) {
+                $species = Specie::where('name_latin', 'like', $search . '%')
+                    ->orWhere('name_french', 'like', $search . '%')
+                    ->orderBy('name_latin')
+                    ->get();
+
+                $total = count($species);
+                $page = (!is_null($request->getParam('page')) ? ($request->getParam('page') - 1) : 0);
+                $pagination = Paginator::paginate(Paginator::$perPage, $total, $request->getParam('page'));
+                $page = (($page > ($pagination['lastPage'] - 1)) ? ($pagination['lastPage'] - 1) : $page);
+                $offset = (Paginator::$perPage * $page);
+
+                $species = Specie::limit(Paginator::$perPage)
+                    ->offset($offset)
+                    ->where('name_latin', 'like', $search . '%')
+                    ->orWhere('name_french', 'like', $search . '%')
+                    ->orderBy('name_latin')
+                    ->get();
+
+                if (!empty($species)) {
+                    $edibilities = Edibility::orderBy('status')->get();
+                    $biotopes = Biotope::orderBy('region')->get();
+                    $other = Biotope::where('region', '=', 'Autre')->first();
+                    $trophic_status = TrophicStatus::orderBy('status')->get();
+
+                    $this->render($response, 'specie/index', [
+                        'species' => $species,
+                        'edibilities' => $edibilities,
+                        'biotopes' => $biotopes,
+                        'trophic_status' => $trophic_status,
+                        'other' => $other,
+                        'pagination' => $pagination
+                    ]);
+                } else {
+                    $this->flash('error', 'Aucun champignon correspondant !');
+                    return $this->redirect($response, 'species');
+                }
+            } else {
+                $this->flash('error', 'Impossible de traiter la recherche !');
+                return $this->redirect($response, 'species');
             }
+        } else {
+            $param = $request->getParam('order');
+            $order = 'name_latin';
+
+            if (!is_null($param)) {
+                if ($param == 'name_latin' || $param == 'name_french') {
+                    $order = $param;
+                }
+            }
+
+            $e = $request->getParam('e');
+            $b = $request->getParam('b');
+            $ts = $request->getParam('ts');
+
+            $edibility = Edibility::where('status', '=', $e)->first();
+            $biotope = Biotope::where('region', '=', $b)->first();
+            $trophic = TrophicStatus::where('status', '=', $ts)->first();
+
+            $species = Specie::where('edibility_id', 'like', (!is_null($edibility) ? $edibility->id : '%'))
+                ->where('biotope_id', 'like', (!is_null($biotope) ? $biotope->id : '%'))
+                ->where('trophic_status_id', 'like', (!is_null($trophic) ? $trophic->id : '%'))
+                ->get();
+
+            $total = count($species);
+            $page = (!is_null($request->getParam('page')) ? ($request->getParam('page') - 1) : 0);
+            $pagination = Paginator::paginate(Paginator::$perPage, $total, $request->getParam('page'));
+            $page = (($page > ($pagination['lastPage'] - 1)) ? ($pagination['lastPage'] - 1) : $page);
+            $offset = (Paginator::$perPage * $page);
+
+            $species = Specie::limit(Paginator::$perPage)
+                ->offset($offset)
+                ->where('edibility_id', 'like', (!is_null($edibility) ? $edibility->id : '%'))
+                ->where('biotope_id', 'like', (!is_null($biotope) ? $biotope->id : '%'))
+                ->where('trophic_status_id', 'like', (!is_null($trophic) ? $trophic->id : '%'))
+                ->orderBy($order)
+                ->get();
+
+            $edibilities = Edibility::orderBy('status')->get();
+            $biotopes = Biotope::orderBy('region')->get();
+            $other = Biotope::where('region', '=', 'Autre')->first();
+            $trophic_status = TrophicStatus::orderBy('status')->get();
+
+            $this->render($response, 'specie/index', [
+                'species' => $species,
+                'edibilities' => $edibilities,
+                'biotopes' => $biotopes,
+                'trophic_status' => $trophic_status,
+                'order' => $order,
+                'e' => $e,
+                'b' => $b,
+                'ts' => $ts,
+                'other' => $other,
+                'pagination' => $pagination
+            ]);
         }
-
-        $e = $request->getParam('e');
-        $b = $request->getParam('b');
-        $ts = $request->getParam('ts');
-
-        $edibility = Edibility::where('status', '=', $e)->first();
-        $biotope = Biotope::where('region', '=', $b)->first();
-        $trophic = TrophicStatus::where('status', '=', $ts)->first();
-
-        $species = Specie::where('edibility_id', 'like', (!is_null($edibility) ? $edibility->id : '%'))
-            ->where('biotope_id', 'like', (!is_null($biotope) ? $biotope->id : '%'))
-            ->where('trophic_status_id', 'like', (!is_null($trophic) ? $trophic->id : '%'))
-            ->get();
-
-        $total = count($species);
-        $page = (!is_null($request->getParam('page')) ? ($request->getParam('page') - 1) : 0);
-        $pagination = Paginator::paginate(Paginator::$perPage, $total, $request->getParam('page'));
-        $page = (($page > ($pagination['lastPage'] - 1)) ? ($pagination['lastPage'] - 1) : $page);
-        $offset = (Paginator::$perPage * $page);
-
-        $species = Specie::limit(Paginator::$perPage)
-            ->offset($offset)
-            ->where('edibility_id', 'like', (!is_null($edibility) ? $edibility->id : '%'))
-            ->where('biotope_id', 'like', (!is_null($biotope) ? $biotope->id : '%'))
-            ->where('trophic_status_id', 'like', (!is_null($trophic) ? $trophic->id : '%'))
-            ->orderBy($order)
-            ->get();
-
-        $edibilities = Edibility::orderBy('status')->get();
-        $biotopes = Biotope::orderBy('region')->get();
-        $other = Biotope::where('region', '=', 'Autre')->first();
-        $trophic_status = TrophicStatus::orderBy('status')->get();
-
-        $this->render($response, 'specie/index', [
-            'species' => $species,
-            'edibilities' => $edibilities,
-            'biotopes' => $biotopes,
-            'trophic_status' => $trophic_status,
-            'order' => $order,
-            'e' => $e,
-            'b' => $b,
-            'ts' => $ts,
-            'other' => $other,
-            'pagination' => $pagination,
-            'QRCodeURI' => $request->getUri() . '/species/'
-        ]);
     }
 
     public function view(RequestInterface $request, ResponseInterface $response, $args)
