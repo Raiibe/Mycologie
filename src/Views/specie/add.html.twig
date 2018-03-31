@@ -97,21 +97,21 @@
             });
 
             input_confusion.keyup(() => {
+                $('ul.ul_confusion').remove()
                 let name = input_confusion.val()
                 if (name.length > 0) {
                     this.getSpecie(input_confusion, name)
-                } else {
-                    $('ul.ul_confusion').remove()
                 }
             });
 
             getSpecie = (input, name) => {
-                let ul_remove = $('ul.ul_confusion')
-                let ul = $('<ul>').addClass('list-group ul_confusion').css('max-height', '200px').css('overflow', 'scroll')
+                let haveData = false
+                let ul = $('<ul>').addClass('list-group ul_confusion').css('max-height', '200px').css('overflow', 'scroll').css('position', 'absolute').css('z-index', '1000').css('width', input_confusion[0].offsetWidth)
 
                 $.get("{{ path_for('species.getSpecie') }}?name_latin=" + name, (data) => {
                     data = JSON.parse(data)
                     if (data.length > 0) {
+                        haveData = true
                         data.forEach((specie) => {
                             ul.append(
                                 $('<li>').addClass('list-group-item specie-item').append(
@@ -123,25 +123,31 @@
                             )
                         })
                     }
-                });
-                $.get("{{ path_for('species.getSpecieFr') }}?name_french=" + name, (data) => {
-                    data = JSON.parse(data)
-                    if (data.length > 0) {
-                        data.forEach((specie) => {
-                            ul.append(
-                                $('<li>').addClass('list-group-item specie-item').append(
-                                    $('<p>').innerHTML = specie.name_french
-                                ).css('cursor', 'pointer').on('click', () => {
-                                    input.val(specie.name_french)
-                                    $('ul.ul_confusion').remove()
-                                })
-                            )
-                        })
-                    }
-                    input.after(ul)
-                    ul_remove.remove()
+
+                    $.get("{{ path_for('species.getSpecieFr') }}?name_french=" + name, (data) => {
+                        data = JSON.parse(data)
+                        if (data.length > 0) {
+                            data.forEach((specie) => {
+                                ul.append(
+                                    $('<li>').addClass('list-group-item specie-item').append(
+                                        $('<p>').innerHTML = specie.name_french
+                                    ).css('cursor', 'pointer').on('click', () => {
+                                        input.val(specie.name_french)
+                                        $('ul.ul_confusion').remove()
+                                    })
+                                )
+                            })
+                        }
+                        if (haveData) {
+                            input.after(ul)
+                        }
+                    });
                 });
             };
+        });
+
+        $(window).resize(() => {
+            $('ul.ul_confusion').css('width', $('input#confusion')[0].offsetWidth)
         });
     </script>
 {% endblock %}

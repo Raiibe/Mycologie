@@ -125,21 +125,21 @@
             let div_search = $('div#searchdiv')
 
             input_search.keyup(() => {
+                $('ul.ul_search').remove()
                 let name = input_search.val()
                 if (name.length > 0) {
                     this.getSpecie(div_search, name, input_search)
-                } else {
-                    $('ul.ul_search').remove()
                 }
             });
 
             getSpecie = (div, name, input) => {
-                let ul_remove = $('ul.ul_search')
-                let ul = $('<ul>').addClass('list-group ul_search').css('max-height', '200px').css('overflow', 'scroll')
+                let haveData = false
+                let ul = $('<ul>').addClass('list-group ul_search').css('max-height', '200px').css('overflow', 'scroll').css('position', 'absolute').css('z-index', '1000').css('width', div_search[0].offsetWidth)
 
                 $.get("{{ path_for('species.getSpecie') }}?name_latin=" + name, (data) => {
                     data = JSON.parse(data)
                     if (data.length > 0) {
+                        haveData = true
                         data.forEach((specie) => {
                             ul.append(
                                 $('<li>').addClass('list-group-item specie-item').append(
@@ -151,26 +151,33 @@
                             )
                         })
                     }
-                });
-                $.get("{{ path_for('species.getSpecieFr') }}?name_french=" + name, (data) => {
-                    data = JSON.parse(data)
-                    if (data.length > 0) {
-                        data.forEach((specie) => {
-                            ul.append(
-                                $('<li>').addClass('list-group-item specie-item').append(
-                                    $('<p>').innerHTML = specie.name_french
-                                ).css('cursor', 'pointer').on('click', () => {
-                                    input.val(specie.name_french)
-                                    $('ul.ul_search').remove()
-                                })
-                            )
-                        })
-                    }
-                    div_search.after(ul)
-                    ul_remove.remove()
+
+                    $.get("{{ path_for('species.getSpecieFr') }}?name_french=" + name, (data) => {
+                        data = JSON.parse(data)
+                        if (data.length > 0) {
+                            haveData = true
+                            data.forEach((specie) => {
+                                ul.append(
+                                    $('<li>').addClass('list-group-item specie-item').append(
+                                        $('<p>').innerHTML = specie.name_french
+                                    ).css('cursor', 'pointer').on('click', () => {
+                                        input.val(specie.name_french)
+                                        $('ul.ul_search').remove()
+                                    })
+                                )
+                            })
+                        }
+                        if (haveData) {
+                            div_search.after(ul)
+                        }
+                    });
                 });
             };
 
+        });
+
+        $(window).resize(() => {
+            $('ul.ul_search').css('width', $('div#searchdiv')[0].offsetWidth)
         });
     </script>
 {% endblock %}
