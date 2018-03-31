@@ -70,6 +70,9 @@ $app->group('/species', function() {
         ->add(new AuthMiddleware($container))
         ->setName('species.addForm');
 
+    $this->get('/tmpdb', SpecieController::class . ':tmpdb')
+        ->setName('species.tmpdb');
+
     $this->get('[/]', SpecieController::class . ':index')
         ->setName('species');
 
