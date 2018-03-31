@@ -6,27 +6,27 @@
 
 {% block content %}
     <div class="mt-3">
-        <h2>Ajout d'un champignon</h2>
+        <h2 class="text-center"><b>Ajout d'un nouveau champignon</b></h2>
         <hr />
         <form action="{{ path_for('species.create') }}" method="post">
             {{ csrf() }}
             <div class="form-group">
-                <label for="name_latin">Nom latin :</label>
-                <input id="name_latin" name="name_latin" type="text" class="{% if flash.errors.name_latin %}has-error{% endif %} form-control" value="{{ persistValues.name_latin }}" placeholder="Nom latin" autofocus required>
+                <label for="name_latin"><h4>Nom latin :</h4></label>
+                <input id="name_latin" name="name_latin" type="text" class="{% if flash.errors.name_latin %}has-error{% endif %} form-control form-control-lg" value="{{ persistValues.name_latin }}" placeholder="Nom latin" autofocus required>
                 <div class="has-error">
                     {% if flash.errors.name_latin %}{{ flash.errors.name_latin }}{% endif %}
                 </div>
             </div>
             <div class="form-group">
-                <label for="name_french">Nom français :</label>
-                <input id="name_french" name="name_french" type="text" class="{% if flash.errors.name_french %}has-error{% endif %} form-control" value="{{ persistValues.name_french }}" placeholder="Nom français" required>
+                <label for="name_french"><h4>Nom français :</h4></label>
+                <input id="name_french" name="name_french" type="text" class="{% if flash.errors.name_french %}has-error{% endif %} form-control form-control-lg" value="{{ persistValues.name_french }}" placeholder="Nom français" required>
                 <div class="has-error">
                     {% if flash.errors.name_french %}{{ flash.errors.name_french }}{% endif %}
                 </div>
             </div>
             <div class="form-group">
-                <label for="edibility">Comestibilité :</label>
-                <select id="edibility" name="edibility" class="custom-select" required>
+                <label for="edibility"><h4>Comestibilité :</h4></label>
+                <select id="edibility" name="edibility" class="custom-select custom-select-lg" required>
                     <option value="">-- Choisissez une comestibilité --</option>
                     {% for edibility in edibilities %}
                         <option {% if persistValues.edibility == edibility.id %}selected{% endif %} value="{{ edibility.id }}">{{ edibility.status }}</option>
@@ -37,8 +37,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="trophic_status">Statut trophique :</label>
-                <select id="trophic_status" name="trophic_status" class="custom-select" required>
+                <label for="trophic_status"><h4>Statut trophique :</h4></label>
+                <select id="trophic_status" name="trophic_status" class="custom-select custom-select-lg" required>
                     <option value="">-- Choisissez un statut trophique --</option>
                     {% for trophic in trophic_status %}
                         <option {% if persistValues.trophic_status == trophic.id %}selected{% endif %} value="{{ trophic.id }}">{{ trophic.status }}</option>
@@ -49,8 +49,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="biotope">Biotope :</label>
-                <select id="biotope" name="biotope" class="custom-select" required>
+                <label for="biotope"><h4>Biotope :</h4></label>
+                <select id="biotope" name="biotope" class="custom-select custom-select-lg" required>
                     <option value="">-- Choisissez un biotope --</option>
                     {% for biotope in biotopes %}
                         <option {% if persistValues.biotope == biotope.id %}selected{% endif %} value="{{ biotope.id }}">{{ biotope.region }}</option>
@@ -61,21 +61,21 @@
                 </div>
             </div>
             <div class="form-group other_region" {% if persistValues.biotope is null %}style="display: none"{% endif %}>
-                <label for="other_region">Autre région :</label>
-                <input id="other_region" name="other_region" type="text" class="{% if flash.errors.other_region %}has-error{% endif %} form-control" value="{{ persistValues.other_region }}" placeholder="Autre région">
+                <label for="other_region"><h4>Autre région :</h4></label>
+                <input id="other_region" name="other_region" type="text" class="{% if flash.errors.other_region %}has-error{% endif %} form-control form-control-lg" value="{{ persistValues.other_region }}" placeholder="Autre région">
                 <div class="has-error">
                     {% if flash.errors.other_region %}{{ flash.errors.other_region }}{% endif %}
                 </div>
             </div>
             <div class="form-group">
-                <label for="confusion">Confusion (optionnel) :</label>
-                <input id="confusion" name="confusion" type="text" class="{% if flash.errors.confusion %}has-error{% endif %} form-control" value="{{ persistValues.confusion }}" placeholder="Nom latin">
+                <label for="confusion"><h4>Confusion (optionnel) :</h4></label>
+                <input id="confusion" name="confusion" type="text" class="{% if flash.errors.confusion %}has-error{% endif %} form-control form-control-lg" value="{{ persistValues.confusion }}" placeholder="Nom latin">
                 <div class="has-error">
                     {% if flash.errors.confusion %}{{ flash.errors.confusion }}{% endif %}
                 </div>
             </div>
-
-            <input type="submit" class="btn btn-primary btn-slm mb-3" value="Ajouter">
+            <a class="btn btn-primary btn-lg btn-slm-delete mb-3 mr-3"  href="{{ path_for('index') }}">Annuler</a>
+            <input type="submit" class="btn btn-lg btn-primary btn-slm-white mb-3" value="Ajouter ce nouveau champignon">
         </form>
     </div>
 {% endblock %}
