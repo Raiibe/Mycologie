@@ -9,34 +9,13 @@ use Psr\Http\Message\ResponseInterface;
 
 class PdfController extends BaseController
 {
-    public function create(RequestInterface $request, ResponseInterface $response)
+    public function add(RequestInterface $request, ResponseInterface $response, $args)
     {
-        $species = Specie::get();
-
-        $total = count($species);
-        $page = (!is_null($request->getParam('page')) ? ($request->getParam('page') - 1) : 0);
-        $pagination = Paginator::paginate(Paginator::$perPage, $total, $request->getParam('page'));
-        $page = (($page > ($pagination['lastPage'] - 1)) ? ($pagination['lastPage'] - 1) : $page);
-        $offset = (Paginator::$perPage * $page);
-
-        $species = Specie::limit(Paginator::$perPage)
-            ->offset($offset)
-            ->orderBy('name_latin')
-            ->get();
-
         if (!isset($_SESSION['pdfGenerator'])) {
             $json = ['species' => []];
             $_SESSION['pdfGenerator'] = json_encode($json);
         }
 
-        $this->render($response, 'pdf/create', [
-            'species' => $species,
-            'pagination' => $pagination
-        ]);
-    }
-
-    public function add(RequestInterface $request, ResponseInterface $response, $args)
-    {
         $specie = Specie::where('id', '=', $args['specie_id'])->first();
 
         if (!is_null($specie)) {
@@ -52,7 +31,7 @@ class PdfController extends BaseController
             $this->flash('error', 'Ce champignon n\'existe pas !');
         }
 
-        return $this->redirect($response, 'pdf.create');
+        return $this->redirect($response, 'species');
     }
 
     public function listPreview(RequestInterface $request, ResponseInterface $response)

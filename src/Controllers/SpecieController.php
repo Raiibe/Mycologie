@@ -17,60 +17,108 @@ class SpecieController extends BaseController
 {
     public function index(RequestInterface $request, ResponseInterface $response)
     {
-        $param = $request->getParam('order');
-        $order = 'name_latin';
+        $search = $request->getParam('search');
 
-        if (!is_null($param)) {
-            if ($param == 'name_latin' || $param == 'name_french') {
-                $order = $param;
+        if (!is_null($search)) {
+            $xss_search = new AntiXSS();
+            $xss_search->xss_clean($search);
+
+            if (!$xss_search->isXssFound()) {
+                $species = Specie::where('name_latin', 'like', $search . '%')
+                    ->orWhere('name_french', 'like', $search . '%')
+                    ->orderBy('name_latin')
+                    ->get();
+
+                $total = count($species);
+                $page = (!is_null($request->getParam('page')) ? ($request->getParam('page') - 1) : 0);
+                $pagination = Paginator::paginate(Paginator::$perPage, $total, $request->getParam('page'));
+                $page = (($page > ($pagination['lastPage'] - 1)) ? ($pagination['lastPage'] - 1) : $page);
+                $offset = (Paginator::$perPage * $page);
+
+                $species = Specie::limit(Paginator::$perPage)
+                    ->offset($offset)
+                    ->where('name_latin', 'like', $search . '%')
+                    ->orWhere('name_french', 'like', $search . '%')
+                    ->orderBy('name_latin')
+                    ->get();
+
+                if (!empty($species)) {
+                    $edibilities = Edibility::orderBy('status')->get();
+                    $biotopes = Biotope::orderBy('region')->get();
+                    $other = Biotope::where('region', '=', 'Autre')->first();
+                    $trophic_status = TrophicStatus::orderBy('status')->get();
+
+                    $this->render($response, 'specie/index', [
+                        'species' => $species,
+                        'edibilities' => $edibilities,
+                        'biotopes' => $biotopes,
+                        'trophic_status' => $trophic_status,
+                        'other' => $other,
+                        'pagination' => $pagination
+                    ]);
+                } else {
+                    $this->flash('error', 'Aucun champignon correspondant !');
+                    return $this->redirect($response, 'species');
+                }
+            } else {
+                $this->flash('error', 'Impossible de traiter la recherche !');
+                return $this->redirect($response, 'species');
             }
+        } else {
+            $param = $request->getParam('order');
+            $order = 'name_latin';
+
+            if (!is_null($param)) {
+                if ($param == 'name_latin' || $param == 'name_french') {
+                    $order = $param;
+                }
+            }
+
+            $e = $request->getParam('e');
+            $b = $request->getParam('b');
+            $ts = $request->getParam('ts');
+
+            $edibility = Edibility::where('status', '=', $e)->first();
+            $biotope = Biotope::where('region', '=', $b)->first();
+            $trophic = TrophicStatus::where('status', '=', $ts)->first();
+
+            $species = Specie::where('edibility_id', 'like', (!is_null($edibility) ? $edibility->id : '%'))
+                ->where('biotope_id', 'like', (!is_null($biotope) ? $biotope->id : '%'))
+                ->where('trophic_status_id', 'like', (!is_null($trophic) ? $trophic->id : '%'))
+                ->get();
+
+            $total = count($species);
+            $page = (!is_null($request->getParam('page')) ? ($request->getParam('page') - 1) : 0);
+            $pagination = Paginator::paginate(Paginator::$perPage, $total, $request->getParam('page'));
+            $page = (($page > ($pagination['lastPage'] - 1)) ? ($pagination['lastPage'] - 1) : $page);
+            $offset = (Paginator::$perPage * $page);
+
+            $species = Specie::limit(Paginator::$perPage)
+                ->offset($offset)
+                ->where('edibility_id', 'like', (!is_null($edibility) ? $edibility->id : '%'))
+                ->where('biotope_id', 'like', (!is_null($biotope) ? $biotope->id : '%'))
+                ->where('trophic_status_id', 'like', (!is_null($trophic) ? $trophic->id : '%'))
+                ->orderBy($order)
+                ->get();
+
+            $edibilities = Edibility::orderBy('status')->get();
+            $biotopes = Biotope::orderBy('region')->get();
+            $other = Biotope::where('region', '=', 'Autre')->first();
+            $trophic_status = TrophicStatus::orderBy('status')->get();
+
+            $this->render($response, 'specie/index', [
+                'species' => $species,
+                'edibilities' => $edibilities,
+                'biotopes' => $biotopes,
+                'trophic_status' => $trophic_status,
+                'order' => $order,
+                'e' => $e,
+                'b' => $b,
+                'ts' => $ts,
+                'other' => $other,
+                'pagination' => $pagination
+            ]);
         }
-
-        $e = $request->getParam('e');
-        $b = $request->getParam('b');
-        $ts = $request->getParam('ts');
-
-        $edibility = Edibility::where('status', '=', $e)->first();
-        $biotope = Biotope::where('region', '=', $b)->first();
-        $trophic = TrophicStatus::where('status', '=', $ts)->first();
-
-        $species = Specie::where('edibility_id', 'like', (!is_null($edibility) ? $edibility->id : '%'))
-            ->where('biotope_id', 'like', (!is_null($biotope) ? $biotope->id : '%'))
-            ->where('trophic_status_id', 'like', (!is_null($trophic) ? $trophic->id : '%'))
-            ->get();
-
-        $total = count($species);
-        $page = (!is_null($request->getParam('page')) ? ($request->getParam('page') - 1) : 0);
-        $pagination = Paginator::paginate(Paginator::$perPage, $total, $request->getParam('page'));
-        $page = (($page > ($pagination['lastPage'] - 1)) ? ($pagination['lastPage'] - 1) : $page);
-        $offset = (Paginator::$perPage * $page);
-
-        $species = Specie::limit(Paginator::$perPage)
-            ->offset($offset)
-            ->where('edibility_id', 'like', (!is_null($edibility) ? $edibility->id : '%'))
-            ->where('biotope_id', 'like', (!is_null($biotope) ? $biotope->id : '%'))
-            ->where('trophic_status_id', 'like', (!is_null($trophic) ? $trophic->id : '%'))
-            ->orderBy($order)
-            ->get();
-
-        $edibilities = Edibility::orderBy('status')->get();
-        $biotopes = Biotope::orderBy('region')->get();
-        $other = Biotope::where('region', '=', 'Autre')->first();
-        $trophic_status = TrophicStatus::orderBy('status')->get();
-
-        $this->render($response, 'specie/index', [
-            'species' => $species,
-            'edibilities' => $edibilities,
-            'biotopes' => $biotopes,
-            'trophic_status' => $trophic_status,
-            'order' => $order,
-            'e' => $e,
-            'b' => $b,
-            'ts' => $ts,
-            'other' => $other,
-            'pagination' => $pagination,
-            'QRCodeURI' => $request->getUri() . '/species/'
-        ]);
     }
 
     public function view(RequestInterface $request, ResponseInterface $response, $args)
@@ -201,9 +249,11 @@ class SpecieController extends BaseController
                         return $this->redirect($response, 'species.addForm');
                     }
 
+                    $specie_confusion = null;
                     if (strlen($confusion) > 0) {
-                        var_dump($confusion);
-                        $specie_confusion = Specie::where('name_latin', 'like', strval($confusion) . '%')->first();
+                        $specie_confusion = Specie::where('name_latin', 'like', strval($confusion) . '%')
+                            ->orWhere('name_french', 'like', strval($confusion) . '%')
+                            ->first();
 
                         if (is_null($specie_confusion)) {
                             $this->flash('error', 'Ce champignon (confusion) est introuvable !');
@@ -218,7 +268,7 @@ class SpecieController extends BaseController
                         'trophic_status_id' => $trophic_status->id,
                         'biotope_id' => $biotope->id,
                         'other_region' => (strlen($other_region) > 0 ? $other_region : null),
-                        'confusion' => (strlen($confusion) > 0 ? $confusion : null),
+                        'confusion' => (strlen($confusion) > 0 ? $specie_confusion->name_latin : null),
                         'creator_id' => Session::get('user')->id
                     ]);
 
@@ -281,7 +331,7 @@ class SpecieController extends BaseController
 
                     if ($xss_other_region->isXssFound()) {
                         $this->flash('error', 'Impossible de traiter le formulaire !');
-                        return $this->redirect($response, 'species.addForm');
+                        return $this->redirect($response, 'species.editForm');
                     }
                 }
 
@@ -291,7 +341,7 @@ class SpecieController extends BaseController
 
                     if ($xss_confusion->isXssFound()) {
                         $this->flash('error', 'Impossible de traiter le formulaire !');
-                        return $this->redirect($response, 'species.addForm');
+                        return $this->redirect($response, 'species.editForm');
                     }
                 }
 
@@ -324,33 +374,32 @@ class SpecieController extends BaseController
                         $trophic_status = TrophicStatus::where('id', '=', $request->getParam('trophic_status'))->first();
                         $biotope = Biotope::where('id', '=', $request->getParam('biotope'))->first();
 
-                        if (!is_null($specie_name_latin)) {
+                        if (!is_null($specie_name_latin) && $specie->name_latin != $request->getParam('name_latin')) {
                             $this->flash('error', 'Ce nom latin existe déjà !');
-                            return $this->redirect($response, 'species.addForm');
+                            return $this->redirect($response, 'species.editForm');
                         }
 
                         if (is_null($edibility)) {
                             $this->flash('error', 'Cette comestibilité est introuvable !');
-                            return $this->redirect($response, 'species.addForm');
+                            return $this->redirect($response, 'species.editForm');
                         }
 
                         if (is_null($trophic_status)) {
                             $this->flash('error', 'Ce statut trophique est introuvable !');
-                            return $this->redirect($response, 'species.addForm');
+                            return $this->redirect($response, 'species.editForm');
                         }
 
                         if (is_null($biotope)) {
                             $this->flash('error', 'Cette région est introuvable !');
-                            return $this->redirect($response, 'species.addForm');
+                            return $this->redirect($response, 'species.editForm');
                         }
 
                         if (strlen($confusion) > 0) {
-                            var_dump($confusion);
                             $specie_confusion = Specie::where('name_latin', 'like', strval($confusion) . '%')->first();
 
                             if (is_null($specie_confusion)) {
                                 $this->flash('error', 'Ce champignon (confusion) est introuvable !');
-                                return $this->redirect($response, 'species.addForm');
+                                return $this->redirect($response, 'species.editForm');
                             }
                         }
 
@@ -374,11 +423,11 @@ class SpecieController extends BaseController
                         }
                     } else {
                         $this->flash('errors', $errors);
-                        return $this->redirect($response, 'species.addForm', []);
+                        return $this->redirect($response, 'species.editForm', []);
                     }
                 } else {
                     $this->flash('error', 'Impossible de traiter le formulaire !');
-                    return $this->redirect($response, 'species.addForm');
+                    return $this->redirect($response, 'species.editForm');
                 }
             }
         } else {

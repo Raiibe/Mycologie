@@ -99,20 +99,8 @@ $app->group('/species', function() {
         ->setName('species.create');
 });
 
-$app->group('/search', function() {
-    $this->get('[/]', SearchController::class . ':index')
-        ->setName('search');
-
-    $this->post('/confirm', SearchController::class . ':search')
-        ->setName('search.confirm');
-});
-
 $app->group('/pdf', function() {
     $container = $this->getContainer();
-
-    $this->get('/create', PdfController::class . ':create')
-        ->add(new AuthMiddleware($container))
-        ->setName('pdf.create');
 
     $this->get('/add/{specie_id}', PdfController::class . ':add')
         ->add(new AuthMiddleware($container))

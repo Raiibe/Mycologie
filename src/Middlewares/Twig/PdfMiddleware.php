@@ -46,9 +46,9 @@ class PdfMiddleware
             $dompdf->render();
 
             if ($stream) {
-                $dompdf->stream();
+                $dompdf->stream('liste.pdf');
             } else {
-                $dompdf->stream('listPreview.pdf', [ "Attachment" => false ]);
+                $dompdf->stream('liste.pdf', [ "Attachment" => false ]);
             }
         }, ['is_safe' => ['html']]));
         return $next($request, $response);

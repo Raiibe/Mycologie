@@ -1,9 +1,9 @@
-.fa {
-    font-size: 30px !important;
-}
-
 .container {
     margin-bottom: 50px !important;
+}
+
+a {
+    cursor: pointer;
 }
 
 footer {
@@ -164,10 +164,24 @@ img.specie_img {
     height: auto;
 }
 
+.fa {
+    font-size: 30px !important;
+}
+
 .fa-size-small {
     font-size: 16px !important;
 }
 
 .fa-size-medium {
     font-size: 25px !important;
+}
+
+.options {
+    color: #CB4531 !important;
+    cursor: pointer;
+}
+
+li.specie-item:hover {
+    color: white;
+    background-color: #CB4531;
 }
