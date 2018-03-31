@@ -8,6 +8,7 @@ use App\Models\Specie;
 use App\Models\TrophicStatus;
 use App\Utils\Paginator;
 use App\Utils\Session;
+use Faker\Provider\Uuid;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator;
@@ -29,6 +30,7 @@ class SpecieController extends BaseController
                     ->orderBy('name_latin')
                     ->get();
 
+
                 $total = count($species);
                 $page = (!is_null($request->getParam('page')) ? ($request->getParam('page') - 1) : 0);
                 $pagination = Paginator::paginate(Paginator::$perPage, $total, $request->getParam('page'));
@@ -43,6 +45,7 @@ class SpecieController extends BaseController
                     ->get();
 
                 if (!empty($species)) {
+
                     $edibilities = Edibility::orderBy('status')->get();
                     $biotopes = Biotope::orderBy('region')->get();
                     $other = Biotope::where('region', '=', 'Autre')->first();
@@ -324,6 +327,7 @@ class SpecieController extends BaseController
 
                 $other_region = $request->getParam('other_region');
                 $confusion = $request->getParam('confusion');
+                $comment = $request->getParam('comment');
 
                 if (strlen($other_region) > 0) {
                     $xss_other_region = new AntiXSS();
@@ -340,6 +344,15 @@ class SpecieController extends BaseController
                     $xss_confusion->xss_clean($confusion);
 
                     if ($xss_confusion->isXssFound()) {
+                        $this->flash('error', 'Impossible de traiter le formulaire !');
+                        return $this->redirect($response, 'species.editForm');
+                    }
+                }
+                if (strlen($comment) > 0) {
+                    $xss_comment = new AntiXSS();
+                    $xss_comment->xss_clean($confusion);
+
+                    if ($xss_comment->isXssFound()) {
                         $this->flash('error', 'Impossible de traiter le formulaire !');
                         return $this->redirect($response, 'species.editForm');
                     }
@@ -403,7 +416,14 @@ class SpecieController extends BaseController
                             }
                         }
 
-                        if ($specie->name_latin != $request->getParam('name_latin') || $specie->name_french != $request->getParam('name_french') || $specie->edibility_id != $edibility->id || $specie->trophic_status_id != $trophic_status->id || $specie->biotope_id != $biotope->id || $specie->other_region != (strlen($other_region) > 0 ? $other_region : null) || $specie->confusion != (strlen($confusion) > 0 ? $confusion : null)) {
+                        die(var_dump($specie));
+
+
+                        if ($specie->name_latin != $request->getParam('name_latin') || $specie->name_french != $request->getParam('name_french')
+                            || $specie->edibility_id != $edibility->id || $specie->trophic_status_id != $trophic_status->id
+                            || $specie->biotope_id != $biotope->id || $specie->other_region != (strlen($other_region) > 0 ? $other_region : null)
+                            || $specie->confusion != (strlen($confusion) > 0 ? $confusion : null)
+                            || $specie->comment != (strlen($comment > 0 ? $comment : null))) {
 
                             $specie->name_latin = $request->getParam('name_latin');
                             $specie->name_french = $request->getParam('name_french');
@@ -413,11 +433,16 @@ class SpecieController extends BaseController
                             $specie->other_region = (strlen($other_region) > 0 ? $other_region : null);
                             $specie->confusion = (strlen($confusion) > 0 ? $confusion : null);
 
+
+                            $specie->comment = (strlen($comment) > 0 ? $comment : null);
+
                             $specie->save();
 
                             $this->flash('success', "Champignon modifié avec succès.");
                             return $this->redirect($response, 'index');
                         } else {
+
+
                             $this->flash('info', "Champignon non mis à jour, valeurs identiques.");
                             return $this->redirect($response, 'species');
                         }
@@ -450,5 +475,14 @@ class SpecieController extends BaseController
         }
 
         return $this->redirect($response, 'species');
+    }
+
+    public function tmpdb(RequestInterface $request, ResponseInterface $response, $args){
+        $species = Specie::get();
+
+        foreach($species as $specie){
+            $specie->id = uniqid();
+            $specie->save();
+        }
     }
 }

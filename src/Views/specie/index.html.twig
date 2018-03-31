@@ -6,27 +6,20 @@
 
 {% block content %}
     <div class="mt-3">
-        <h2>Champignons</h2>
-        <hr />
 
-        <a href="{{ path_for('species.addForm') }}" class="btn btn-primary btn-slm-white mb-3"><span class="fa fa-plus-circle fa-size-small"></span> Ajouter un champignon</a>
+        <div class="text-center mb-4">
+        <a href="{{ path_for('species.addForm') }}" class="btn btn-primary btn-lg btn-slm-white mb-3"><span class="fa fa-plus-circle fa-size-small"></span> Je souhaite ajouter un nouveau champignon</a>
+        <hr>
+        </div>
 
-        <form class="mb-3" action="{{ path_for('species') }}?search=">
-            <div id="searchdiv" class="input-group">
-                <input type="text" id="search" name="search" class="form-control" placeholder="Entrer un nom d'espèce (latin ou français)">
-                <span class="input-group-btn">
-                    <button class="btn btn-primary btn-slm" type="submit"><i class="fa fa-search fa-size-medium"></i></button>
-                </span>
-            </div>
-        </form>
 
-        <form class="input-group" action="{{ path_for('species') }}">
+        <form class="input-group input-group-lg mb-4" action="{{ path_for('species') }}">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="order">
                     Trier par :
                 </label>
             </div>
-            <select class="custom-select" id="order" onChange="location = this.options[this.selectedIndex].value">
+            <select class="custom-select custom-select-lg" id="order" onChange="location = this.options[this.selectedIndex].value">
                 <optgroup label="Noms">
                     <option {% if order == 'name_latin' %}selected{% endif %} value="{{ path_for('species') }}?order=name_latin">Nom latin</option>
                     <option {% if order == 'name_french' %}selected{% endif %} value="{{ path_for('species') }}?order=name_french">Nom français</option>
@@ -48,34 +41,64 @@
                 </optgroup>
             </select>
         </form>
+        <div class="text-center">
+            <h3>OU</h3>
+        </div>
+        <form class="mb-4 mt-4" action="{{ path_for('species') }}?search=">
+            <div id="searchdiv" class="input-group">
+                <input type="text" id="search" name="search" class="form-control form-control-lg" placeholder="Entrer un nom d'espèce (latin ou français)">
+                <span class="input-group-btn">
+                    <button class="btn btn-success btn-lg" type="submit"><i class="fa fa-search fa-size-medium"></i></button>
+                </span>
+            </div>
+        </form>
         {% if species | length > 0 %}
             <div class="row mt-4">
                 {% for specie in species %}
                     <div class="card col-10 col-xl-5 col-lg-5 col-sm-10 col-md-5 mb-5 ml-5 p-0">
-                        <img class="card-img-top" src="http://via.placeholder.com/350x150" alt="{{ specie.name_latin }}">
-                        <div class="card-body">
-                            {% if auth.role == 'admin' or auth.id == specie.creator_id %}
-                                <div class="dropdown float-right">
-                                    <a class="fa fa-ellipsis-h fa-size-medium options" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="{{ path_for('species.editForm', { 'specie_id': specie.id }) }}">Modifier</a>
-                                        <a class="dropdown-item" onclick="if(confirm('Etes-vous sûr de vouloir supprimer cette espèce ?'))  document.location.href = '{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}'">Supprimer</a>
-                                    </div>
+                        {% if auth.role == 'admin' or auth.id == specie.creator_id %}
+                            <div class="dropdown">
+                                <a class=" float-right fa fa-ellipsis-v btn btn-lg m-4 fa-size-large options" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a href="{{ path_for('pdf.add', { 'specie_id': specie.id }) }}" class="dropdown-item"><span class="fa fa-plus mr-3 align-middle"></span>Ajouter à ma liste d'impression</a><hr />
+                                    <a class="dropdown-item" href="{{ path_for('species.editForm', { 'specie_id': specie.id }) }}"><span class="fa fa-edit mr-3 align-middle"></span>Modifier ce champignon</a><hr />
+                                    <a class="dropdown-item" onclick="if(confirm('Etes-vous sûr de vouloir supprimer cette espèce ?'))  document.location.href = '{{ path_for('species.deleteOne', { 'specie_id': specie.id }) }}'"><span class="fa fa-trash mr-3 align-middle"></span>Supprimer ce champignon</a>
                                 </div>
-                            {% endif %}
-                            <h5 class="card-title"><a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}">{{ specie.name_latin }} - {{ specie.name_french }}</a></h5>
-                            <p class="card-text"><strong>Comestibilité :</strong> {{ specie.getEdibility.status }}</p>
-                            <p class="card-text"><strong>Statut trophique :</strong> {{ specie.getTrophicStatus.status }}</p>
-                            <p class="card-text"><strong>Région :</strong> {% if specie.biotope_id != other.id %}{{ specie.getBiotope.region }}{% else %}{{ specie.other_region }}{% endif %}</p>
-                            <div>
-                                {% if auth %}
-                                    <div class="btn-group">
-                                        <a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}" class="btn btn-primary btn-sm btn-slm">Plus de détails</a>
-                                        <a href="{{ path_for('pdf.add', { 'specie_id': specie.id }) }}" class="btn btn-primary btn-sm btn-slm-white">Ajouter à la liste</a>
-                                    </div>
-                                {% else %}
-                                    <a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}" class="btn btn-primary btn-sm btn-slm">Plus de détails</a>
-                                {% endif %}
+                            </div>
+                        {% endif %}
+                        <img class="card-img-top" src="http://via.placeholder.com/350x150" alt="{{ specie.name_latin }}">
+                        <div class="card-header text-center">
+                            <h4 class="card-title"><a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}">{{ specie.name_latin }}</a></h4>
+                            <h5 class="card-title">{{ specie.name_french }}</h5>
+
+                        </div>
+
+                        <div class="card-body">
+                            <ul class="list-group mb-3">
+                                <li class="list-group-item"> <h5 class="card-text"><strong>Comestibilité :</strong> {{ specie.getEdibility.status }}
+                                        {% if('sans' in specie.getEdibility.status|lower) %}
+                                            <div class="edibility-grey"></div>
+                                        {% endif %}
+                                        {% if('suspect' in specie.getEdibility.status|lower) %}
+                                            <div class="edibility-suspect">s</div>
+                                        {% endif %}
+                                        {% if('comestible' in specie.getEdibility.status|lower) %}
+                                            <div class="edibility-blue"></div>
+                                        {% endif %}
+                                        {% if('cuit' in specie.getEdibility.status|lower or 'toxique' in specie.getEdibility.status|lower) %}
+                                            <div class="edibility-orange"></div>
+                                        {% endif %}
+                                        {% if('mortel' in specie.getEdibility.status|lower) %}
+                                            <div class="edibility-red"></div>
+                                        {% endif %}</h5>
+                                </li>
+                                <li class="list-group-item"> <h5 class="card-text"><strong>Statut trophique :</strong> {{ specie.getTrophicStatus.status }}</h5>
+                                </li>
+                                <li class="list-group-item"><h5 class="card-text"><strong>Région :</strong> {% if specie.biotope_id != other.id %}{{ specie.getBiotope.region }}{% else %}{{ specie.other_region }}{% endif %}</h5>
+                                </li>
+                            </ul>
+                            <div class="text-center">
+                                <a href="{{ path_for('species.view', { 'specie_id': specie.id }) }}" class="btn m-auto btn-primary btn-lg btn-slm"><span class="fa fa-info mr-3  align-middle"></span>Plus de détails</a>
                             </div>
                         </div>
                     </div>
