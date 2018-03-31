@@ -142,7 +142,7 @@
                     if (data.length > 0) {
                         data.forEach((specie) => {
                             ul.append(
-                                $('<li>').addClass('list-group-item').append(
+                                $('<li>').addClass('list-group-item specie-item').append(
                                     $('<p>').innerHTML = specie.name_latin
                                 ).css('cursor', 'pointer').on('click', () => {
                                     input.val(specie.name_latin)
@@ -150,26 +150,23 @@
                                 })
                             )
                         })
-                        div_search.after(ul)
                     }
-                    ul_remove.remove()
                 });
                 $.get("{{ path_for('species.getSpecieFr') }}?name_french=" + name, (data) => {
                     data = JSON.parse(data)
                     if (data.length > 0) {
                         data.forEach((specie) => {
                             ul.append(
-                                $('<li>').addClass('list-group-item').append(
+                                $('<li>').addClass('list-group-item specie-item').append(
                                     $('<p>').innerHTML = specie.name_french
                                 ).css('cursor', 'pointer').on('click', () => {
-                                    console.log(input)
                                     input.val(specie.name_french)
                                     $('ul.ul_search').remove()
                                 })
                             )
                         })
-                        div_search.after(ul)
                     }
+                    div_search.after(ul)
                     ul_remove.remove()
                 });
             };

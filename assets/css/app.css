@@ -180,3 +180,8 @@ img.specie_img {
     color: #CB4531 !important;
     cursor: pointer;
 }
+
+li.specie-item:hover {
+    color: white;
+    background-color: #CB4531;
+}

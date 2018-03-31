@@ -249,9 +249,11 @@ class SpecieController extends BaseController
                         return $this->redirect($response, 'species.addForm');
                     }
 
+                    $specie_confusion = null;
                     if (strlen($confusion) > 0) {
-                        var_dump($confusion);
-                        $specie_confusion = Specie::where('name_latin', 'like', strval($confusion) . '%')->first();
+                        $specie_confusion = Specie::where('name_latin', 'like', strval($confusion) . '%')
+                            ->orWhere('name_french', 'like', strval($confusion) . '%')
+                            ->first();
 
                         if (is_null($specie_confusion)) {
                             $this->flash('error', 'Ce champignon (confusion) est introuvable !');
@@ -266,7 +268,7 @@ class SpecieController extends BaseController
                         'trophic_status_id' => $trophic_status->id,
                         'biotope_id' => $biotope->id,
                         'other_region' => (strlen($other_region) > 0 ? $other_region : null),
-                        'confusion' => (strlen($confusion) > 0 ? $confusion : null),
+                        'confusion' => (strlen($confusion) > 0 ? $specie_confusion->name_latin : null),
                         'creator_id' => Session::get('user')->id
                     ]);
 
@@ -329,7 +331,7 @@ class SpecieController extends BaseController
 
                     if ($xss_other_region->isXssFound()) {
                         $this->flash('error', 'Impossible de traiter le formulaire !');
-                        return $this->redirect($response, 'species.addForm');
+                        return $this->redirect($response, 'species.editForm');
                     }
                 }
 
@@ -339,7 +341,7 @@ class SpecieController extends BaseController
 
                     if ($xss_confusion->isXssFound()) {
                         $this->flash('error', 'Impossible de traiter le formulaire !');
-                        return $this->redirect($response, 'species.addForm');
+                        return $this->redirect($response, 'species.editForm');
                     }
                 }
 
@@ -372,33 +374,32 @@ class SpecieController extends BaseController
                         $trophic_status = TrophicStatus::where('id', '=', $request->getParam('trophic_status'))->first();
                         $biotope = Biotope::where('id', '=', $request->getParam('biotope'))->first();
 
-                        if (!is_null($specie_name_latin)) {
+                        if (!is_null($specie_name_latin) && $specie->name_latin != $request->getParam('name_latin')) {
                             $this->flash('error', 'Ce nom latin existe déjà !');
-                            return $this->redirect($response, 'species.addForm');
+                            return $this->redirect($response, 'species.editForm');
                         }
 
                         if (is_null($edibility)) {
                             $this->flash('error', 'Cette comestibilité est introuvable !');
-                            return $this->redirect($response, 'species.addForm');
+                            return $this->redirect($response, 'species.editForm');
                         }
 
                         if (is_null($trophic_status)) {
                             $this->flash('error', 'Ce statut trophique est introuvable !');
-                            return $this->redirect($response, 'species.addForm');
+                            return $this->redirect($response, 'species.editForm');
                         }
 
                         if (is_null($biotope)) {
                             $this->flash('error', 'Cette région est introuvable !');
-                            return $this->redirect($response, 'species.addForm');
+                            return $this->redirect($response, 'species.editForm');
                         }
 
                         if (strlen($confusion) > 0) {
-                            var_dump($confusion);
                             $specie_confusion = Specie::where('name_latin', 'like', strval($confusion) . '%')->first();
 
                             if (is_null($specie_confusion)) {
                                 $this->flash('error', 'Ce champignon (confusion) est introuvable !');
-                                return $this->redirect($response, 'species.addForm');
+                                return $this->redirect($response, 'species.editForm');
                             }
                         }
 
@@ -422,11 +423,11 @@ class SpecieController extends BaseController
                         }
                     } else {
                         $this->flash('errors', $errors);
-                        return $this->redirect($response, 'species.addForm', []);
+                        return $this->redirect($response, 'species.editForm', []);
                     }
                 } else {
                     $this->flash('error', 'Impossible de traiter le formulaire !');
-                    return $this->redirect($response, 'species.addForm');
+                    return $this->redirect($response, 'species.editForm');
                 }
             }
         } else {
