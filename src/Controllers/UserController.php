@@ -67,6 +67,7 @@ class UserController extends BaseController
 
                 if (empty($errors)) {
                     User::create([
+                        'id' => uniqid(rand()),
                         'last_name' => $request->getParam('last_name'),
                         'first_name' => $request->getParam('first_name'),
                         'mail' => $request->getParam('mail'),

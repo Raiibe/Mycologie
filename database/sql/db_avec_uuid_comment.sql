@@ -29,7 +29,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `biotope` (
   `id` int(10) UNSIGNED NOT NULL,
   `region` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp
 ) ;
 
 --
@@ -64,7 +65,8 @@ INSERT INTO `biotope` (`id`, `region`, `updated_at`, `created_at`) VALUES
 CREATE TABLE `edibility` (
   `id` int(10) UNSIGNED NOT NULL,
   `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp
 ) ;
 
 --
@@ -97,7 +99,8 @@ CREATE TABLE `specie` (
   `confusion` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `comment` text NOT NULL,
   `creator_id` int(10) UNSIGNED NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp
 ) ;
 
 --
@@ -707,7 +710,8 @@ INSERT INTO `specie` (`id`, `name_latin`, `name_french`, `edibility_id`, `trophi
 CREATE TABLE `trophic_status` (
   `id` int(10) UNSIGNED NOT NULL,
   `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp
 ) ;
 
 --
@@ -734,7 +738,8 @@ CREATE TABLE `user` (
   `last_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `first_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `role` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp
 ) ;
 
 --
