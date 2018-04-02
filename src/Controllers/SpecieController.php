@@ -8,7 +8,6 @@ use App\Models\Specie;
 use App\Models\TrophicStatus;
 use App\Utils\Paginator;
 use App\Utils\Session;
-use Faker\Provider\Uuid;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Respect\Validation\Validator;
@@ -265,6 +264,7 @@ class SpecieController extends BaseController
                     }
 
                     Specie::create([
+                        'id' => uniqid(rand()),
                         'name_latin' => $request->getParam('name_latin'),
                         'name_french' => $request->getParam('name_french'),
                         'edibility_id' => $edibility->id,
@@ -416,9 +416,6 @@ class SpecieController extends BaseController
                             }
                         }
 
-                        die(var_dump($specie));
-
-
                         if ($specie->name_latin != $request->getParam('name_latin') || $specie->name_french != $request->getParam('name_french')
                             || $specie->edibility_id != $edibility->id || $specie->trophic_status_id != $trophic_status->id
                             || $specie->biotope_id != $biotope->id || $specie->other_region != (strlen($other_region) > 0 ? $other_region : null)
@@ -441,8 +438,6 @@ class SpecieController extends BaseController
                             $this->flash('success', "Champignon modifié avec succès.");
                             return $this->redirect($response, 'index');
                         } else {
-
-
                             $this->flash('info', "Champignon non mis à jour, valeurs identiques.");
                             return $this->redirect($response, 'species');
                         }

@@ -8,6 +8,7 @@ class Specie extends Model
 {
     protected $table = 'specie';
     protected $primaryKey = 'id';
+    public $incrementing = false;
     protected $fillable = [
         'name_latin',
         'name_french',
