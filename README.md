@@ -10,7 +10,7 @@ Ces instructions vous permettront d'obtenir une copie du projet opérationnel su
 ### Prérequis
 ```
 * Server web avec Réécriture d'URL
-* PHP 7.0 or plus recent
+* PHP 7.0 ou plus recent
 * Base de donnée MySQL/MariaDB contenant une base de données 'mycologie' avec le fichier .sql chargé
 * Composer globalement installé
 ```
@@ -25,7 +25,7 @@ Pour exécuter le projet, utilisez les commandes suivantes
 
 Ensuite, un serveur est en cours d'exécution sur votre machine locale indiquée dans votre terminal.
 
-Vous auriez alors accès à un compte administrateur avec ces identifiants :
+Vous aurez alors accès à un compte administrateur avec ces identifiants :
 * email : admin@admin.fr
 * mot de passe : admin
 
@@ -36,8 +36,8 @@ Vous auriez alors accès à un compte administrateur avec ces identifiants :
 
 # Etudiants
 
-* BAIER Geoffrey
-* BINET Paul
-* DELAMARRE Quentin
-* ELSHOBOKSHY Islam
-* RENOUARD Quentin
+* BAIER Geoffrey [baier2u](https://github.com/baier2u)
+* BINET Paul [Paul-Binet](https://github.com/Paul-Binet)
+* DELAMARRE Quentin [windos757](https://github.com/windos757)
+* ELSHOBOKSHY Islam [elshobokshy](https://github.com/elshobokshy)
+* RENOUARD Quentin [Quinou-kun](https://github.com/Quinou-kun)
