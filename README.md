@@ -27,11 +27,11 @@ Ensuite, un serveur est en cours d'exécution sur votre machine locale indiquée
 
 Vous aurez alors accès à un compte administrateur avec ces identifiants :
 * user :
-** email : test@gmail.com
-** mot de passe : test
+* * email : test@gmail.com
+* * mot de passe : test
 * admin :
-** email : admin@admin.fr
-** mot de passe : admin
+* * email : admin@admin.fr
+* * mot de passe : admin
 
 
 ## Créé avec
