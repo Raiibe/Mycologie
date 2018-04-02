@@ -74,6 +74,10 @@
                     {% if flash.errors.confusion %}{{ flash.errors.confusion }}{% endif %}
                 </div>
             </div>
+            <div class="form-group">
+                <label for="comment"><h4>Description (optionnel) :</h4></label>
+                <textarea class="form-control" rows="5" id="comment" name="comment" placeholder="Entrer votre description ici...">{% if persistValues.comment %}{{ persistValues.comment }}{% else %}{{ specie.comment }}{% endif %}</textarea>
+            </div>
             <a class="btn btn-primary btn-lg btn-slm-delete mb-3 mr-3"  href="{{ path_for('index') }}">Annuler</a>
             <input type="submit" class="btn btn-lg btn-primary btn-slm-white mb-3" value="Ajouter ce nouveau champignon">
         </form>

@@ -10,6 +10,7 @@ class Specie extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $fillable = [
+        'id',
         'name_latin',
         'name_french',
         'edibility_id',
@@ -17,6 +18,7 @@ class Specie extends Model
         'biotope_id',
         'other_region',
         'confusion',
+        'comment',
         'creator_id'
     ];
     public $timestamps = true;

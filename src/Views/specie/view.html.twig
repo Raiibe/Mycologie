@@ -39,17 +39,15 @@
                         <li class="list-group-item p-4"><h5 class="card-text"><strong>Confusion :</strong> {% if specie.confusion %}{{ specie.confusion }}{% else %}Aucune confusion n'est référencée {% endif %}</h5>
                         </li>
                     </ul>
-
-                    <div>
-                        <h5>{{ specie.comment }}</h5>
-                    </div>
-
-
                 </div>
             </div>
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                 <img class="specie_img" src="http://via.placeholder.com/350x150" alt="{{ specie.name_latin }}">
             </div>
+        </div>
+
+        <div>
+            <h5><i>{% if specie.comment %}{{ specie.comment }}{% else %}Il n'y a pas de commentaire pour ce champignon{% endif %}</i></h5>
         </div>
     </div>
 

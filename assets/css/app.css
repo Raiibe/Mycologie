@@ -234,3 +234,8 @@ li.specie-item:hover {
     color: white;
     background-color: #eeb422;
 }
+
+textarea#comment {
+    min-height: 50px;
+    max-height: 500px;
+}

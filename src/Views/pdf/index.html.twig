@@ -27,56 +27,56 @@
             <div class="specie">
                 <div class="images">
                     <div class="logo"></div>
-                    <img src="{{ qr_code(uri ~ '/species/', species[i].id) }}" />
+                    <img src="{{ qr_code(uri ~ '/species/', species[i].specie.id) }}" />
                 </div>
 
-                <h3>Société Lorraine de Mycologie</h3>
+                <h3>Société Lorraine de Mycologie <span class="index">{{ species[i].index }}</span></h3>
                 <hr/>
                 <div>
-                    <p class="edibility"><strong><i>{{ species[i].getEdibility.status }}</i></strong>
+                    <p class="edibility"><strong><i>{{ species[i].specie.getEdibility.status }}</i></strong>
                     </p>
 
-                    {% if species[i].getEdibility.id  == 1 %}
+                    {% if species[i].specie.getEdibility.id  == 1 %}
                         <div class="dot-red"></div>
                     {% endif %}
-                    {% if species[i].getEdibility.id == 2 %}
+                    {% if species[i].specie.getEdibility.id == 2 %}
                         <div class="dot-orange"></div>
                     {% endif %}
-                    {% if species[i].getEdibility.id  == 3 %}
+                    {% if species[i].specie.getEdibility.id  == 3 %}
                         <div class="dot-orange"></div>
                         <div class="dot-blue"></div>
                     {% endif %}
-                    {% if species[i].getEdibility.id  == 4 %}
+                    {% if species[i].specie.getEdibility.id  == 4 %}
                         <div class="dot-blue"></div>
                     {% endif %}
-                    {% if species[i].getEdibility.id  == 5 %}
+                    {% if species[i].specie.getEdibility.id  == 5 %}
                         <div class="dot-grey"></div>
                     {% endif %}
-                    {% if species[i].getEdibility.id  == 6 %}
+                    {% if species[i].specie.getEdibility.id  == 6 %}
                         <div class="dot-blue"></div>
                         <div class="dot-orange"></div>
                     {% endif %}
-                    {% if species[i].getEdibility.id  == 7 %}
+                    {% if species[i].specie.getEdibility.id  == 7 %}
                         <div class="dot-suspect">S</div>
                     {% endif %}
 
 
                 </div>
                 <div class="specie-name">
-                    <h2>{{ species[i].name_latin }}</h2>
-                    <h4>{{ species[i].name_french }}</h4>
+                    <h2>{{ species[i].specie.name_latin }}</h2>
+                    <h4>{{ species[i].specie.name_french }}</h4>
                 </div>
 
                 <div class="data">
                     <p>Biotope : <b>
-                            {% if  species[i].getBiotope.region == "Autre" %}
-                            {{ species[i].other_region }}
+                            {% if  species[i].specie.getBiotope.region == "Autre" %}
+                                {{ species[i].specie.other_region }}
                             {% else %}
-                            {{ species[i].getBiotope.region }}
+                                {{ species[i].specie.getBiotope.region }}
                             {% endif %}
                         </b></p>
-                    <p>Pédologie : <b>{{ species[i].getTrophicStatus.status }}</b></p>
-                    <p>Confusion : <strong><i>{{ species[i].confusion }}</i></strong></p>
+                    <p>Pédologie : <b>{{ species[i].specie.getTrophicStatus.status }}</b></p>
+                    <p>Confusion : <strong><i>{% if species[i].specie.confusion %}{{ species[i].specie.confusion }}{% else %}Non renseigné{% endif %}</i></strong></p>
                 </div>
             </div>
         {% endfor %}
@@ -98,8 +98,8 @@
                 background: orange;
             }
             .dot-red{
-                 background: red;
-             }
+                background: red;
+            }
             .dot-blue{
                 background: blue;
             }
@@ -157,6 +157,11 @@
 
             .data{
                 text-align : left;
+            }
+
+            span.index {
+                font-weight: normal;
+                margin-left: 50px;
             }
         </style>
     {% endblock %}

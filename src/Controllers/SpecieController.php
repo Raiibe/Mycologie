@@ -181,6 +181,7 @@ class SpecieController extends BaseController
 
             $other_region = $request->getParam('other_region');
             $confusion = $request->getParam('confusion');
+            $comment = $request->getParam('comment');
 
             if (strlen($other_region) > 0) {
                 $xss_other_region = new AntiXSS();
@@ -197,6 +198,16 @@ class SpecieController extends BaseController
                 $xss_confusion->xss_clean($confusion);
 
                 if ($xss_confusion->isXssFound()) {
+                    $this->flash('error', 'Impossible de traiter le formulaire !');
+                    return $this->redirect($response, 'species.addForm');
+                }
+            }
+
+            if (strlen($comment) > 0) {
+                $xss_comment = new AntiXSS();
+                $xss_comment->xss_clean($comment);
+
+                if ($xss_comment->isXssFound()) {
                     $this->flash('error', 'Impossible de traiter le formulaire !');
                     return $this->redirect($response, 'species.addForm');
                 }
@@ -272,6 +283,7 @@ class SpecieController extends BaseController
                         'biotope_id' => $biotope->id,
                         'other_region' => (strlen($other_region) > 0 ? $other_region : null),
                         'confusion' => (strlen($confusion) > 0 ? $specie_confusion->name_latin : null),
+                        'comment' => strval((strlen($comment) > 0 ? $comment : null)),
                         'creator_id' => Session::get('user')->id
                     ]);
 
@@ -350,7 +362,7 @@ class SpecieController extends BaseController
                 }
                 if (strlen($comment) > 0) {
                     $xss_comment = new AntiXSS();
-                    $xss_comment->xss_clean($confusion);
+                    $xss_comment->xss_clean($comment);
 
                     if ($xss_comment->isXssFound()) {
                         $this->flash('error', 'Impossible de traiter le formulaire !');
@@ -420,7 +432,7 @@ class SpecieController extends BaseController
                             || $specie->edibility_id != $edibility->id || $specie->trophic_status_id != $trophic_status->id
                             || $specie->biotope_id != $biotope->id || $specie->other_region != (strlen($other_region) > 0 ? $other_region : null)
                             || $specie->confusion != (strlen($confusion) > 0 ? $confusion : null)
-                            || $specie->comment != (strlen($comment > 0 ? $comment : null))) {
+                            || $specie->comment != strval(strlen($comment > 0 ? $comment : null))) {
 
                             $specie->name_latin = $request->getParam('name_latin');
                             $specie->name_french = $request->getParam('name_french');
@@ -429,9 +441,7 @@ class SpecieController extends BaseController
                             $specie->biotope_id = $biotope->id;
                             $specie->other_region = (strlen($other_region) > 0 ? $other_region : null);
                             $specie->confusion = (strlen($confusion) > 0 ? $confusion : null);
-
-
-                            $specie->comment = (strlen($comment) > 0 ? $comment : null);
+                            $specie->comment = strval((strlen($comment) > 0 ? $comment : null));
 
                             $specie->save();
 

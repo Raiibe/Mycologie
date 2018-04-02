@@ -10,6 +10,7 @@ class User extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $fillable = [
+        'id',
         'last_name',
         'first_name',
         'mail',
