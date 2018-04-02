@@ -748,8 +748,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `mail`, `password`, `last_name`, `first_name`, `role`, `updated_at`, `created_at`) VALUES
-('10245427695ac0218d21614', 'test@gmail.com', '$2y$10$4chd6qUIvwbWgVRYz1DQkOegNCpVurf3eX3VwMszGNw71iivIr8uK', 'Dupont', 'Jean', 'user', '2018-04-01 00:02:21', '2018-02-14 09:07:49'),
-('20313630655ac0218d0b3b3', 'admin@admin.fr', '$2y$10$zp3mxcM.CEY2Uhr01LeAzuhfkX41U3giAXF/0a1QIEvLo14QimI/.', 'admin', 'admin', 'admin', '2018-04-01 00:02:21', '2018-03-15 11:07:47');
+('20313630655ac0218d0b3b3', 'test@gmail.com', '$2y$10$4chd6qUIvwbWgVRYz1DQkOegNCpVurf3eX3VwMszGNw71iivIr8uK', 'Dupont', 'Jean', 'user', '2018-04-01 00:02:21', '2018-02-14 09:07:49'),
+('10245427695ac0218d21614', 'admin@admin.fr', '$2y$10$zp3mxcM.CEY2Uhr01LeAzuhfkX41U3giAXF/0a1QIEvLo14QimI/.', 'admin', 'admin', 'admin', '2018-04-01 00:02:21', '2018-03-15 11:07:47');
 
 --
 -- Index pour les tables exportées
