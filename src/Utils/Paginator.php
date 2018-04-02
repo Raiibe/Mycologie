@@ -13,6 +13,7 @@ namespace App\Utils;
  */
 class Paginator
 {
+    public static $perPage = 10;
 
     /**
      * Returns a pagination table
@@ -28,5 +29,4 @@ class Paginator
         ];
         return $pagination;
     }
-
 }

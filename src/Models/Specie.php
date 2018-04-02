@@ -8,9 +8,18 @@ class Specie extends Model
 {
     protected $table = 'specie';
     protected $primaryKey = 'id';
+    public $incrementing = false;
     protected $fillable = [
+        'id',
         'name_latin',
-        'name_french'
+        'name_french',
+        'edibility_id',
+        'trophic_status_id',
+        'biotope_id',
+        'other_region',
+        'confusion',
+        'comment',
+        'creator_id'
     ];
     public $timestamps = true;
 
@@ -27,5 +36,10 @@ class Specie extends Model
     public function getTrophicStatus()
     {
         return $this->belongsTo(TrophicStatus::class, 'trophic_status_id');
+    }
+
+    public function getCreator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
     }
 }

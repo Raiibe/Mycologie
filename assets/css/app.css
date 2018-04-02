@@ -1,23 +1,87 @@
+.container {
+    margin-bottom: 50px !important;
+}
+
+a {
+    cursor: pointer;
+}
+
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    z-index: 1000;
+    transition: all 0.5s ease-in 0s;
+    color: white;
+    background-color: #eeb422;
+}
+
+footer.active {
+    height: 225px;
+}
+
+footer .showFooter {
+    width: 100%;
+    height : 100px;
+    font-size: 50px !important;
+    text-align: center;
+    cursor: pointer;
+}
+
+footer div.container > div.row > div {
+    margin: 15px 0;
+}
+
+footer div.container div.copyright p {
+    margin: 0;
+    padding-bottom: 15px;
+}
+
+footer a, footer a:hover {
+    color: white;
+}
+
 input[type=submit], button {
     cursor: pointer;
 }
 
 nav.navbar {
+    font-size : 1.4em;
     padding-bottom: 0;
-    background-color: #CB4531 !important;
+    background-color: #eeb422 !important;
+}
+
+div.dropdown-menu a.dropdown-item {
+    font-size : 1.1em;
+}
+
+div.dropdown-menu a.dropdown-item:hover {
+    color: white;
+    background-color: #eeb422;
+}
+
+div.dropdown-menu a.dropdown-item.active {
+    color: #CB4531;
+    background-color: white;
 }
 
 ul.navbar-nav {
     margin-top: 4px !important;
 }
 
+
 ul.navbar-nav li.nav-item a.nav-link {
     color: white;
+    margin-bottom: 5px !important;
     display: inline-block !important;
 }
 
 ul.navbar-nav li.nav-item.active a.nav-link {
-    border-bottom: 5px solid #EACE36 !important;
+    margin-bottom: 0 !important;
+    border-bottom: 5px solid red !important;
 }
 
 @media screen and (max-width: 991px) {
@@ -27,21 +91,105 @@ ul.navbar-nav li.nav-item.active a.nav-link {
 }
 
 img#logo-slm {
-    width: 30px;
+    width: 50px;
     height: auto;
-    position: relative;
-    top: -5px;
+}
+
+img#logo-slm-footer {
+    width: 100px;
+    height: auto;
+}
+
+.text-color-slm {
+    color: #CB4531 !important;
+}
+
+.carousel-indicators li.active {
+    background-color: #CB4531 !important;
+}
+
+:root {
+    --carousel-control-width: 10%;
+}
+
+.carousel-item {
+    margin: 0 var(--carousel-control-width) !important;
+}
+
+.carousel-item img {
+    width: calc(100% - var(--carousel-control-width) * 2) !important;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: var(--carousel-control-width) !important;
 }
 
 .btn-slm {
-    border-color: #CB4531 !important;
-    background-color: #CB4531 !important;
+    color: white !important;
+    border-color: #eeb422 !important;
+    background-color: #eeb422 !important;
+}
+
+.btn-slm:hover {
+    color: #eeb422 !important;
+    border-color:  #eeb422!important;
+    background-color: white !important;
 }
 
 .btn-slm-yellow {
     color: black !important;
     border-color: #EACE36 !important;
     background-color: #EACE36 !important;
+}
+
+.btn-slm-white {
+    color: white !important;
+    border-color: forestgreen !important;
+    background-color: forestgreen !important;
+}
+
+.btn-slm-white:hover {
+    color:forestgreen !important;
+    border-color: forestgreen !important;
+    background-color: white !important;
+}
+
+.edibility-blue,.edibility-grey , .edibility-orange, .edibility-red,.edibility-suspect{
+    width: 25px;
+    height: 25px;
+    display : inline-block;
+    vertical-align: middle;
+    border-radius : 50%;
+}
+
+.edibility-suspect{
+    text-align : center;
+    background-color : lightgrey;
+}
+.edibility-blue{
+    background-color : cornflowerblue;
+}
+.edibility-grey{
+    background-color : gray;
+ }
+.edibility-orange{
+    background-color : orange;
+}
+.edibility-red{
+    background-color : red;
+}
+
+
+.btn-slm-delete {
+    color: white !important;
+    border-color: red !important;
+    background-color: red !important;
+}
+
+.btn-slm-delete:hover {
+    color:red !important;
+    border-color: red !important;
+    background-color: white !important;
 }
 
 .pagination li.page-item a.page-link {
@@ -58,4 +206,36 @@ img#logo-slm {
     color: grey !important;
     border-color: lightgrey !important;
     background-color: lightgrey !important;
+}
+
+img.specie_img {
+    width: 100%;
+    height: auto;
+}
+
+.fa {
+    font-size: 30px !important;
+}
+
+.fa-size-small {
+    font-size: 16px !important;
+}
+
+.fa-size-medium {
+    font-size: 25px !important;
+}
+
+.options {
+    color: #CB4531 !important;
+    cursor: pointer;
+}
+
+li.specie-item:hover {
+    color: white;
+    background-color: #eeb422;
+}
+
+textarea#comment {
+    min-height: 50px;
+    max-height: 500px;
 }

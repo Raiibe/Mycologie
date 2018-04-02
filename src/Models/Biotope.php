@@ -8,6 +8,7 @@ class Biotope extends Model
 {
     protected $table = 'biotope';
     protected $primaryKey = 'id';
+    public $incrementing = false;
     protected $fillable = [
         'region'
     ];

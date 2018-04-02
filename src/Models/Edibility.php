@@ -8,6 +8,7 @@ class Edibility extends Model
 {
     protected $table = 'edibility';
     protected $primaryKey = 'id';
+    public $incrementing = false;
     protected $fillable = [
         'status'
     ];

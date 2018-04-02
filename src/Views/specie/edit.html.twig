@@ -1,0 +1,158 @@
+{% extends "layouts/layout.html.twig" %}
+
+{% set title = 'Edition d\'un champignon' %}
+
+{% set route = 'species.edit' %}
+
+{% block content %}
+    <div class="mt-3">
+        <h2 class="text-center">Vous allez modifier <b>{{ specie.name_latin }}</b></h2>
+        <hr />
+        <form action="{{ path_for('species.update', { 'specie_id': specie.id }) }}" method="post">
+            {{ csrf() }}
+            <div class="form-group">
+                <label for="name_latin"><h4>Nom latin :</h4></label>
+                <input id="name_latin" name="name_latin" type="text" class="{% if flash.errors.name_latin %}has-error{% endif %} form-control form-control-lg" value="{% if persistValues.name_latin %}{{ persistValues.name_latin }}{% else %}{{ specie.name_latin }}{% endif %}" placeholder="Nom latin" autofocus required>
+                <div class="has-error">
+                    {% if flash.errors.name_latin %}{{ flash.errors.name_latin }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name_french"><h4>Nom français :</h4></label>
+                <input id="name_french" name="name_french" type="text" class="{% if flash.errors.name_french %}has-error{% endif %} form-control form-control-lg" value="{% if persistValues.name_french %}{{ persistValues.name_french }}{% else %}{{ specie.name_french }}{% endif %}" placeholder="Nom français" required>
+                <div class="has-error">
+                    {% if flash.errors.name_french %}{{ flash.errors.name_french }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="edibility"><h4>Comestibilité :</h4></label>
+                <select id="edibility" name="edibility" class="custom-select custom-select-lg" required>
+                    <option value="">-- Choisissez une comestibilité --</option>
+                    {% for edibility in edibilities %}
+                        <option {% if persistValues.edibility == edibility.id %}selected{% elseif specie.edibility_id == edibility.id %}selected{% endif %} value="{{ edibility.id }}">{{ edibility.status }}</option>
+                    {% endfor %}
+                </select>
+                <div class="has-error">
+                    {% if flash.errors.edibility %}{{ flash.errors.edibility }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="trophic_status"><h4>Statut trophique :</h4></label>
+                <select id="trophic_status" name="trophic_status" class="custom-select custom-select-lg" required>
+                    <option value="">-- Choisissez un statut trophique --</option>
+                    {% for trophic in trophic_status %}
+                        <option {% if persistValues.trophic_status == trophic.id %}selected{% elseif specie.trophic_status_id == trophic.id %}selected{% endif %} value="{{ trophic.id }}">{{ trophic.status }}</option>
+                    {% endfor %}
+                </select>
+                <div class="has-error">
+                    {% if flash.errors.trophic_status %}{{ flash.errors.trophic_status }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="biotope"><h4>Biotope :</h4></label>
+                <select id="biotope" name="biotope" class="custom-select custom-select-lg" required>
+                    <option value="">-- Choisissez un biotope --</option>
+                    {% for biotope in biotopes %}
+                        <option {% if persistValues.biotope == biotope.id %}selected{% elseif specie.biotope_id == biotope.id %}selected{% endif %} value="{{ biotope.id }}">{{ biotope.region }}</option>
+                    {% endfor %}
+                </select>
+                <div class="has-error">
+                    {% if flash.errors.biotope %}{{ flash.errors.biotope }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group other_region" {% if persistValues.biotope is null and specie.other_region is null %}style="display: none"{% endif %}>
+                <label for="other_region"><h4>Autre région :</h4></label>
+                <input id="other_region" name="other_region" type="text" class="{% if flash.errors.other_region %}has-error{% endif %} form-control form-control-lg" value="{% if persistValues.other_region %}{{ persistValues.other_region }}{% else %}{{ specie.other_region }}{% endif %}" placeholder="Autre région">
+                <div class="has-error">
+                    {% if flash.errors.other_region %}{{ flash.errors.other_region }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confusion"><h4>Confusion (optionnel) :</h4></label>
+                <input id="confusion" name="confusion" type="text" class="{% if flash.errors.confusion %}has-error{% endif %} form-control form-control-lg" value="{% if persistValues.confusion %}{{ persistValues.confusion }}{% else %}{{ specie.confusion }}{% endif %}" placeholder="Nom latin">
+                <div class="has-error">
+                    {% if flash.errors.confusion %}{{ flash.errors.confusion }}{% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="comment"><h4>Description (optionnel) :</h4></label>
+                <textarea class="form-control" rows="5" id="comment" name="comment" placeholder="Entrer votre description ici...">{% if persistValues.comment %}{{ persistValues.comment }}{% else %}{{ specie.comment }}{% endif %}</textarea>
+            </div>
+
+            <a class="btn btn-primary btn-slm-delete btn-lg mb-3 mr-3" href="{{ path_for('species.view', { 'specie_id': specie.id }) }}">Annuler</a>
+            <input type="submit" class="btn btn-primary btn-lg btn-slm-white mb-3" value="Valider mes modifications">
+        </form>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(() => {
+            let select_biotope = $('select#biotope')
+            let input_confusion = $('input#confusion')
+
+            select_biotope.on('change', () => {
+                if (parseInt(select_biotope.val()) === {{ other.id }}) {
+                    $('div.other_region').show()
+                    $('input#other_region').prop('required', true)
+                } else {
+                    $('div.other_region').hide()
+                    $('input#other_region').prop('required', false).attr('value', '')
+                }
+            });
+
+            input_confusion.keyup(() => {
+                $('ul.ul_confusion').remove()
+                let name = input_confusion.val()
+                if (name.length > 0) {
+                    this.getSpecie(input_confusion, name)
+                }
+            });
+
+            getSpecie = (input, name) => {
+                let haveData = false
+                let ul = $('<ul>').addClass('list-group ul_confusion').css('max-height', '200px').css('overflow', 'scroll').css('position', 'absolute').css('z-index', '1000').css('width', input_confusion[0].offsetWidth)
+
+                $.get("{{ path_for('species.getSpecie') }}?name_latin=" + name, (data) => {
+                    data = JSON.parse(data)
+                    if (data.length > 0) {
+                        haveData = true
+                        data.forEach((specie) => {
+                            ul.append(
+                                $('<li>').addClass('list-group-item specie-item').append(
+                                    $('<p>').innerHTML = specie.name_latin
+                                ).css('cursor', 'pointer').on('click', () => {
+                                    input.val(specie.name_latin)
+                                    $('ul.ul_confusion').remove()
+                                })
+                            )
+                        })
+                    }
+
+                    $.get("{{ path_for('species.getSpecieFr') }}?name_french=" + name, (data) => {
+                        data = JSON.parse(data)
+                        if (data.length > 0) {
+                            data.forEach((specie) => {
+                                ul.append(
+                                    $('<li>').addClass('list-group-item specie-item').append(
+                                        $('<p>').innerHTML = specie.name_french
+                                    ).css('cursor', 'pointer').on('click', () => {
+                                        input.val(specie.name_french)
+                                        $('ul.ul_confusion').remove()
+                                    })
+                                )
+                            })
+                        }
+                        if (haveData) {
+                            input.after(ul)
+                        }
+                    });
+                });
+            };
+        });
+
+        $(window).resize(() => {
+            $('ul.ul_confusion').css('width', $('input#confusion')[0].offsetWidth)
+        });
+    </script>
+{% endblock %}

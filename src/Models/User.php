@@ -8,7 +8,9 @@ class User extends Model
 {
     protected $table = 'user';
     protected $primaryKey = 'id';
+    public $incrementing = false;
     protected $fillable = [
+        'id',
         'last_name',
         'first_name',
         'mail',
@@ -17,4 +19,8 @@ class User extends Model
     ];
     public $timestamps = true;
 
+    public function getSpecies()
+    {
+        return $this->hasMany(Specie::class, 'creator_id');
+    }
 }

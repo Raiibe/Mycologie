@@ -2,6 +2,8 @@
 
 {% set title = 'Connexion' %}
 
+{% set route = 'user.login' %}
+
 {% block content %}
     <div class="mt-3">
         <h2>Connexion</h2>
@@ -10,7 +12,7 @@
             {{ csrf() }}
             <div class="form-group">
                 <label for="mail">Email :</label>
-                <input id="mail" name="mail" type="email" class="{% if flash.errors.mail %}has-error{% endif %} form-control" value="{{ persistValues.mail }}" placeholder="Email" required>
+                <input id="mail" name="mail" type="email" class="{% if flash.errors.mail %}has-error{% endif %} form-control" value="{{ persistValues.mail }}" placeholder="Email" autofocus required>
                 <div class="has-error">
                     {% if flash.errors.mail %}{{ flash.errors.mail }}{% endif %}
                 </div>
