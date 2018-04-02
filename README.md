@@ -26,10 +26,12 @@ Pour exécuter le projet, utilisez les commandes suivantes
 Ensuite, un serveur est en cours d'exécution sur votre machine locale indiquée dans votre terminal.
 
 Vous aurez alors accès à un compte administrateur avec ces identifiants :
-* user : * email : test@gmail.com * mot de passe : test
+* user :
+  * email : test@gmail.com
+  * mot de passe : test
 * admin :
-* * email : admin@admin.fr
-* * mot de passe : admin
+  * email : admin@admin.fr
+  * mot de passe : admin
 
 
 ## Créé avec
