@@ -4,14 +4,14 @@ Projet tutoré de Licence Pro CISIIE.
 
 ## A propos
 
-Ces instructions vous permettront d'obtenir une copie du projet opérationnel sur votre machine locale pour des fins de développement et de test.
+Ces instructions vous permettront d'obtenir une copie du projet opérationnel sur votre machine locale à des fins de développement et de test.
 
 
 ### Prérequis
 ```
-*  Server web avec Réécriture d'URL
+* Server web avec Réécriture d'URL
 * PHP 7.0 or plus recent
-* Base de donnée MySQL/MariaDB database contenant une base de données 'mycologie' avec le fichier .sql chargé
+* Base de donnée MySQL/MariaDB contenant une base de données 'mycologie' avec le fichier .sql chargé
 * Composer globalement installé
 ```
 ### Installation 
@@ -24,6 +24,10 @@ Pour exécuter le projet, utilisez les commandes suivantes
 ```
 
 Ensuite, un serveur est en cours d'exécution sur votre machine locale indiquée dans votre terminal.
+
+Vous auriez alors accès à un compte administrateur avec ces identifiants :
+* email : admin@admin.fr
+* mot de passe : admin
 
 
 ## Créé avec
