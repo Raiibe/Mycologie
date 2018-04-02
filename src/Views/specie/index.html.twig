@@ -121,7 +121,7 @@
                     </li>
 
                     {% for i in 1..pagination.lastPage %}
-                        {% if i == 1 or i == pagination.currentPage or i % 10 == 0 or i == pagination.lastPage %}
+                        {% if i == 1 or i == pagination.currentPage - 3 or i == pagination.currentPage - 2 or i == pagination.currentPage - 1 or i == pagination.currentPage or i == pagination.currentPage + 1 or i == pagination.currentPage + 2 or i == pagination.currentPage + 3 or i == pagination.lastPage %}
                             <li class="page-item {% if pagination.currentPage == i or (pagination.currentPage <= 0 and i <= 1) or (pagination.currentPage > pagination.lastPage and i >= pagination.lastPage) %}active{% endif %}">
                                 <a class="page-link" href="?page={{ i }}{% if order %}&order={{ order }}{% endif %}{% if e %}&e={{ e }}{% endif %}{% if b %}&b={{ b }}{% endif %}{% if ts %}&ts={{ ts }}{% endif %}">{{ i }}</a>
                             </li>

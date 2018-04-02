@@ -38,24 +38,43 @@ class PdfController extends BaseController
     {
         if (isset($_SESSION['pdfGenerator'])) {
             $json = json_decode($_SESSION['pdfGenerator']);
+            $speciesBDD = Specie::orderBy('name_latin')->get();
             $species = [];
 
             foreach ($json->species as $specie_id) {
                 $specie = Specie::where('id', '=', $specie_id)->first();
 
                 if (!is_null($specie)) {
-                    array_push($species, $specie);
-                } else {
-                    $this->flash('error', 'Ce champignon n\'existe pas !');
+                    $index = null;
+
+                    for ($i = 0; $i < sizeof($speciesBDD); $i++) {
+                        if ($speciesBDD[$i]->id == $specie->id) {
+                            $index = $i + 1;
+                            break;
+                        }
+                    }
+
+                    $tabSpecie = [ 'specie' => $specie, 'index' => $index ];
+
+                    array_push($species, $tabSpecie);
                 }
             }
-            $uri = $request->getUri()->getScheme() . '://' . $request->getUri()->getHost() . $request->getUri()->getBasePath() . ':' . $request->getUri()->getPort();
 
-            $this->render($response, 'app/pdf', [
-                'species' => $species,
-                'uri' => $uri,
-                'stream' => false
-            ]);
+            if (sizeof($species) > 0) {
+                $uri = $request->getUri()->getScheme() . '://' . $request->getUri()->getHost() . $request->getUri()->getBasePath() . ':' . $request->getUri()->getPort();
+
+                $this->render($response, 'app/pdf', [
+                    'species' => $species,
+                    'uri' => $uri,
+                    'stream' => false
+                ]);
+            } else {
+                $this->flash('info', 'Il n\'y a aucun champignon à imprimer !');
+                return $this->redirect($response, 'index');
+            }
+        } else {
+            $this->flash('info', 'Il n\'y a aucun champignon à imprimer !');
+            return $this->redirect($response, 'index');
         }
     }
 
@@ -63,24 +82,45 @@ class PdfController extends BaseController
     {
         if (isset($_SESSION['pdfGenerator'])) {
             $json = json_decode($_SESSION['pdfGenerator']);
+            $speciesBDD = Specie::orderBy('name_latin')->get();
             $species = [];
 
             foreach ($json->species as $specie_id) {
                 $specie = Specie::where('id', '=', $specie_id)->first();
 
                 if (!is_null($specie)) {
-                    array_push($species, $specie);
+                    $index = null;
+
+                    for ($i = 0; $i < sizeof($speciesBDD); $i++) {
+                        if ($speciesBDD[$i]->id == $specie->id) {
+                            $index = $i + 1;
+                            break;
+                        }
+                    }
+
+                    $tabSpecie = [ 'specie' => $specie, 'index' => $index ];
+
+                    array_push($species, $tabSpecie);
                 } else {
                     $this->flash('error', 'Ce champignon n\'existe pas !');
                 }
             }
-            $uri = $request->getUri()->getScheme() . '://' . $request->getUri()->getHost() . $request->getUri()->getBasePath() . ':' . $request->getUri()->getPort();
 
-            $this->render($response, 'app/pdf', [
-                'species' => $species,
-                'uri' => $uri,
-                'stream' => true
-            ]);
+            if (sizeof($species) > 0) {
+                $uri = $request->getUri()->getScheme() . '://' . $request->getUri()->getHost() . $request->getUri()->getBasePath() . ':' . $request->getUri()->getPort();
+
+                $this->render($response, 'app/pdf', [
+                    'species' => $species,
+                    'uri' => $uri,
+                    'stream' => true
+                ]);
+            } else {
+                $this->flash('info', 'Il n\'y a aucun champignon à imprimer !');
+                return $this->redirect($response, 'index');
+            }
+        } else {
+            $this->flash('info', 'Il n\'y a aucun champignon à imprimer !');
+            return $this->redirect($response, 'index');
         }
     }
 }
