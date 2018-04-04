@@ -36,27 +36,27 @@
                     <p class="edibility"><strong><i>{{ species[i].specie.getEdibility.status }}</i></strong>
                     </p>
 
-                    {% if species[i].specie.getEdibility.id  == 1 %}
+                    {% if species[i].specie.getEdibility.status  == 'Mortel' %}
                         <div class="dot-red"></div>
                     {% endif %}
-                    {% if species[i].specie.getEdibility.id == 2 %}
+                    {% if species[i].specie.getEdibility.status == 'Toxique' %}
                         <div class="dot-orange"></div>
                     {% endif %}
-                    {% if species[i].specie.getEdibility.id  == 3 %}
+                    {% if species[i].specie.getEdibility.status  == 'Toxique/comestible avec recommandation' %}
                         <div class="dot-orange"></div>
                         <div class="dot-blue"></div>
                     {% endif %}
-                    {% if species[i].specie.getEdibility.id  == 4 %}
+                    {% if species[i].specie.getEdibility.status  == 'Comestible' %}
                         <div class="dot-blue"></div>
                     {% endif %}
-                    {% if species[i].specie.getEdibility.id  == 5 %}
+                    {% if species[i].specie.getEdibility.status  == 'Sans valeur' %}
                         <div class="dot-grey"></div>
                     {% endif %}
-                    {% if species[i].specie.getEdibility.id  == 6 %}
+                    {% if species[i].specie.getEdibility.status  == 'Comestible bien cuit' %}
                         <div class="dot-blue"></div>
                         <div class="dot-orange"></div>
                     {% endif %}
-                    {% if species[i].specie.getEdibility.id  == 7 %}
+                    {% if species[i].specie.getEdibility.status  == 'Suspect' %}
                         <div class="dot-suspect">S</div>
                     {% endif %}
 
@@ -128,7 +128,7 @@
             .logo {
                 width : 60px;
                 height : 70px;
-                background-image: url("/assets/img/Logo_SLM.jpg");
+                background-image: url("assets/img/Logo_SLM.jpg");
             }
 
             .specie {

@@ -87,6 +87,7 @@ class SpecieController extends BaseController
             $species = Specie::where('edibility_id', 'like', (!is_null($edibility) ? $edibility->id : '%'))
                 ->where('biotope_id', 'like', (!is_null($biotope) ? $biotope->id : '%'))
                 ->where('trophic_status_id', 'like', (!is_null($trophic) ? $trophic->id : '%'))
+                ->orderBy('name_latin')
                 ->get();
 
             $total = count($species);
@@ -148,7 +149,9 @@ class SpecieController extends BaseController
 
     public function getSpecieFr(RequestInterface $request, ResponseInterface $response)
     {
-        $species = Specie::where('name_french', 'like', $request->getParam('name_french') . '%')->get();
+        $species = Specie::where('name_french', 'like', $request->getParam('name_french') . '%')
+            ->orderBy('name_latin')
+            ->get();
 
         return json_encode($species);
     }
@@ -480,14 +483,5 @@ class SpecieController extends BaseController
         }
 
         return $this->redirect($response, 'species');
-    }
-
-    public function tmpdb(RequestInterface $request, ResponseInterface $response, $args){
-        $species = Specie::get();
-
-        foreach($species as $specie){
-            $specie->id = uniqid();
-            $specie->save();
-        }
     }
 }
