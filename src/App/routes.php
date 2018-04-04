@@ -116,4 +116,8 @@ $app->group('/pdf', function() {
     $this->get('/listDownload', PdfController::class . ':listDownload')
         ->add(new AuthMiddleware($container))
         ->setName('pdf.listDownload');
+
+    $this->get('/delete', PdfController::class . ':delete')
+        ->add(new AuthMiddleware($container))
+        ->setName('pdf.delete');
 });
