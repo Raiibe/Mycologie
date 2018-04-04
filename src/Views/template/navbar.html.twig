@@ -4,40 +4,31 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-        <li class="nav-item  ml-4 {% if route == 'home' %}active{% endif %}">
-            <a class="nav-link" href="{{ path_for('index') }}"><span class="fa fa-home mr-2"></span>Accueil<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item  ml-4  {% if route == 'species' %}active{% endif %}">
-            <a class="nav-link" href="{{ path_for('species') }}"><span class="fa fa-search mr-2"></span>Rechercher un champignon<span class="sr-only">(current)</span></a>
-        </li>
-    </ul>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item  ml-4 {% if route == 'home' %}active{% endif %}">
+                <a class="nav-link" href="{{ path_for('index') }}"><span class="fa fa-home mr-2"></span>Accueil<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item  ml-4  {% if route == 'species' %}active{% endif %}">
+                <a class="nav-link" href="{{ path_for('species') }}"><span class="fa fa-search mr-2"></span>Rechercher un champignon<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
 
         {% if auth %}
-            {% if auth.role == 'admin' %}
-                <div class="dropdown mr-1 mb-2">
-                    <a class="btn btn-light btn-lg dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ auth.first_name }} {{ auth.last_name }}</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item {% if route == 'user.view' %}active{% endif %}" href="{{ path_for('user.view') }}"><span class="fa fa-user mr-4"></span>Mon compte</a>
-                        <hr/>
-                        <a class="dropdown-item  align-middle" href="{{ path_for('pdf.listPreview') }}"><span class=" align-middle fa fa-list mr-4"></span>Voir ma liste d'impression</a>
-                        <hr/>
-                        <a class="dropdown-item" href="{{ path_for('pdf.listDownload') }}"><span class="fa fa-download mr-4"></span>Télécharger ma liste d'impression</a>
-                    </div>
-                </div>
-            {% else %}
-                <div class="dropdown mr-1 mb-2">
-                    <a class="btn btn-light btn-lg dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ auth.first_name }} {{ auth.last_name }}</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item {% if route == 'user.view' %}active{% endif %}" href="{{ path_for('user.view') }}">Mon compte</a>
-                        <a class="dropdown-item {% if route == 'user.species' %}active{% endif %}" href="{{ path_for('user.species') }}">Mes champignons</a>
+            <div class="dropdown mr-1 mb-2">
+                <a class="btn btn-light btn-lg dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ auth.first_name }} {{ auth.last_name }}</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item {% if route == 'user.view' %}active{% endif %}" href="{{ path_for('user.view') }}"><span class="fa fa-user mr-4"></span>Mon compte</a>
+                    {% if auth.role == 'admin' %}
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ path_for('pdf.listPreview') }}">Voir ma liste</a>
-                        <a class="dropdown-item" href="{{ path_for('pdf.listDownload') }}">Télécharger ma liste</a>
-                    </div>
+                        <a class="dropdown-item  align-middle" href="{{ path_for('pdf.listPreview') }}"><span class=" align-middle fa fa-list mr-4"></span>Voir ma liste d'impression</a>
+                        <a class="dropdown-item" href="{{ path_for('pdf.listDownload') }}"><span class="fa fa-download mr-4"></span>Télécharger ma liste d'impression</a>
+                        <a class="dropdown-item" href="{{ path_for('pdf.delete') }}"><span class="fa fa-trash mr-4"></span>Vider ma liste d'impression</a>
+                    {% else %}
+                        <a class="dropdown-item {% if route == 'user.species' %}active{% endif %}" href="{{ path_for('user.species') }}"><span class="fa fa-pagelines mr-4"></span>Mes champignons</a>
+                    {% endif %}
                 </div>
-            {% endif %}
+            </div>
             <a class="btn btn-danger btn-lg mb-2" href="{{ path_for('user.logout') }}"><span class="fa fa-sign-out mr-2"></span>Déconnexion</a>
         {% else %}
             <a class="btn btn-light btn-lg mr-1 mb-2" href="{{ path_for('user.register.form') }}"><span class="fa fa-user-plus mr-2"></span>S'inscrire</a>

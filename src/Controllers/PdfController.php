@@ -123,4 +123,17 @@ class PdfController extends BaseController
             return $this->redirect($response, 'index');
         }
     }
+
+    public function delete(RequestInterface $request, ResponseInterface $response)
+    {
+        if (isset($_SESSION['pdfGenerator'])) {
+            unset($_SESSION['pdfGenerator']);
+
+            $this->flash('success', 'Votre liste a bien été vidé !');
+        } else {
+            $this->flash('error', 'Votre liste est déjà vide !');
+        }
+
+        return $this->redirect($response, 'index');
+    }
 }
