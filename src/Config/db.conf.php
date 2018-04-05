@@ -6,10 +6,10 @@ return array(
     // development configuration
 	'dev' => array(
 		'driver' => 'mysql',
-		'host' => 'localhost',
-		'user' => 'root',
-		'pass' => 'toor',
-		'dbName' => 'mycologie',
+		'host' => 'YOUR_HOST',
+		'user' => 'YOUR_USER',
+		'pass' => 'YOUR_PWD',
+		'dbName' => 'YOUR_DB_NAME',
 		'port' => 3306,
         'charset' => 'utf8',
         'collation' => 'utf8_unicode_ci',

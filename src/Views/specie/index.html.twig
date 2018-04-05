@@ -6,11 +6,12 @@
 
 {% block content %}
     <div class="mt-3">
-
-        <div class="text-center mb-4">
-        <a href="{{ path_for('species.addForm') }}" class="btn btn-primary btn-lg btn-slm-white mb-3"><span class="fa fa-plus-circle fa-size-small"></span> Je souhaite ajouter un nouveau champignon</a>
-        <hr>
-        </div>
+        {% if auth.role == 'admin' %}
+            <div class="text-center mb-4">
+                <a href="{{ path_for('species.addForm') }}" class="btn btn-primary btn-lg btn-slm-white mb-3"><span class="fa fa-plus-circle fa-size-small"></span> Je souhaite ajouter un nouveau champignon</a>
+                <hr>
+            </div>
+        {% endif %}
 
 
         <form class="input-group input-group-lg mb-4" action="{{ path_for('species') }}">
@@ -56,7 +57,7 @@
             <div class="row mt-4">
                 {% for specie in species %}
                     <div class="card col-10 col-xl-5 col-lg-5 col-sm-10 col-md-5 mb-5 ml-5 p-0">
-                        {% if auth.role == 'admin' or auth.id == specie.creator_id %}
+                        {% if auth.role == 'admin' %}
                             <div class="dropdown">
                                 <a class=" float-right fa fa-ellipsis-v btn btn-lg m-4 fa-size-large options" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

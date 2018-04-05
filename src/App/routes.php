@@ -1,10 +1,11 @@
 <?php
 use App\Controllers\AppController;
 
+use App\Controllers\DatabaseController;
 use App\Controllers\PdfController;
 use App\Controllers\SpecieController;
-use App\Controllers\SearchController;
 use App\Controllers\UserController;
+use App\Middlewares\AdminMiddleware;
 use App\Middlewares\GuestMiddleware;
 use App\Middlewares\AuthMiddleware;
 
@@ -59,7 +60,6 @@ $app->group('/user', function() {
 
     $this->get('/delete', UserController::class . ':delete')
         ->add(new AuthMiddleware($container))
-        ->add(new GuestMiddleware($container))
         ->setName('user.delete');
 });
 
@@ -67,7 +67,7 @@ $app->group('/species', function() {
     $container = $this->getContainer();
 
     $this->get('/add', SpecieController::class . ':addForm')
-        ->add(new AuthMiddleware($container))
+        ->add(new AdminMiddleware($container))
         ->setName('species.addForm');
 
     $this->get('/tmpdb', SpecieController::class . ':tmpdb')
@@ -120,4 +120,12 @@ $app->group('/pdf', function() {
     $this->get('/delete', PdfController::class . ':delete')
         ->add(new AuthMiddleware($container))
         ->setName('pdf.delete');
+});
+
+$app->group('/database', function() {
+    $container = $this->getContainer();
+
+    $this->get('/download', DatabaseController::class . ':download')
+        ->add(new AdminMiddleware($container))
+        ->setName('database.download');
 });
