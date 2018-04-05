@@ -90,8 +90,10 @@
             let select_biotope = $('select#biotope')
             let input_confusion = $('input#confusion')
 
+            console.log(select_biotope.val())
+
             select_biotope.on('change', () => {
-                if (parseInt(select_biotope.val()) === {{ other.id }}) {
+                if (select_biotope.val() === "{{ other.id }}") {
                     $('div.other_region').show()
                     $('input#other_region').prop('required', true)
                 } else {

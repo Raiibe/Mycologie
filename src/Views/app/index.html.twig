@@ -5,17 +5,23 @@
 {% set route = 'home' %}
 
 {% block content %}
-    <div class="mt-4">
-        <div class="pb-1 mt-5 mb-5">
+    <div class="mt-3">
+        {% if auth.role == 'admin' %}
+            <div class="text-center mb-4">
+                <a href="{{ path_for('species.addForm') }}" class="btn btn-primary btn-lg btn-slm-white mb-3"><span class="fa fa-plus-circle fa-size-small"></span> Je souhaite ajouter un nouveau champignon</a>
+                <hr>
+            </div>
+        {% endif %}
 
+        <div class="pb-1 mb-5">
             <p>
-            <h2 class="text-center" >Bienvenue ! </h2>
-            <h5 class="text-center">Bienvenue sur le site de la base de données mycologique de la
-                <a href="http://societelorrainedemycologie.wifeo.com">Société Lorraine de Mycologie (SLM)</a>. Vous pourrez trouver
-                sur ce site des champignons recensés dans la base de données de la SLM. Si vous voulez découvrir ou rechercher des champignons,
-                rendez-vous sur la rubrique
-                <a href="{{ path_for('species') }}">Rechercher un champignon.</a>
-            </h5>
+                <h2 class="text-center" >Bienvenue ! </h2>
+                <h5 class="text-center">Bienvenue sur le site de la base de données mycologique de la
+                    <a href="http://societelorrainedemycologie.wifeo.com">Société Lorraine de Mycologie (SLM)</a>. Vous pourrez trouver
+                    sur ce site des champignons recensés dans la base de données de la SLM. Si vous voulez découvrir ou rechercher des champignons,
+                    rendez-vous sur la rubrique
+                    <a href="{{ path_for('species') }}">Rechercher un champignon.</a>
+                </h5>
             </p>
         </div>
 
@@ -54,9 +60,9 @@
 
 
     {% if species_month_recent | length > 0 %}
-    	<div class="mt-5">
-        	<h2>Les ajouts du mois</h2>
-        	<hr />
+        <div class="mt-5">
+            <h2>Les ajouts du mois</h2>
+            <hr />
 
             <div class="row">
                 {% for specie in species_month_recent %}
@@ -95,6 +101,6 @@
                     </ul>
                 </nav>
             {% endif %}
-    	</div>
+        </div>
     {% endif %}
 {% endblock %}
