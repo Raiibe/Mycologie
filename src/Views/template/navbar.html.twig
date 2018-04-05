@@ -20,6 +20,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item {% if route == 'user.view' %}active{% endif %}" href="{{ path_for('user.view') }}"><span class="fa fa-user mr-4"></span>Mon compte</a>
                     {% if auth.role == 'admin' %}
+                        <a class="dropdown-item" href="{{ path_for('database.download') }}"><span class="fa fa-database mr-4"></span>Télécharger la BDD</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item  align-middle" href="{{ path_for('pdf.listPreview') }}"><span class=" align-middle fa fa-list mr-4"></span>Voir ma liste d'impression</a>
                         <a class="dropdown-item" href="{{ path_for('pdf.listDownload') }}"><span class="fa fa-download mr-4"></span>Télécharger ma liste d'impression</a>
