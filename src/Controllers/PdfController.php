@@ -107,7 +107,7 @@ class PdfController extends BaseController
             }
 
             if (sizeof($species) > 0) {
-                $uri = $request->getUri()->getScheme() . '://' . $request->getUri()->getHost() . $request->getUri()->getBasePath() . ':' . $request->getUri()->getPort();
+                $uri = $request->getUri()->getScheme() . '://' . $request->getUri()->getHost() . $request->getUri()->getBasePath() . (!$request->getUri()->getPort() ? '' : ':' . $request->getUri()->getPort());
 
                 $this->render($response, 'app/pdf', [
                     'species' => $species,
