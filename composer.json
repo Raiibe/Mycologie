@@ -19,8 +19,10 @@
         "slim/flash": "^0.2.0",
         "slim/csrf": "^0.8.1",
         "respect/validation": "^1.1",
+        "fzaninotto/faker": "^1.6",
         "voku/anti-xss": "^2.1",
         "chillerlan/php-qrcode": "dev-master",
+        "knplabs/knp-snappy": "^1.0",
         "dompdf/dompdf": "^0.8.2"
     },
     "autoload": {
