@@ -86,19 +86,19 @@ $app->group('/species', function() {
         ->setName('species.view');
 
     $this->get('/{specie_id}/edit', SpecieController::class . ':editForm')
-        ->add(new AuthMiddleware($container))
+        ->add(new AdminMiddleware($container))
         ->setName('species.editForm');
 
     $this->post('/{specie_id}/update', SpecieController::class . ':update')
-        ->add(new AuthMiddleware($container))
+        ->add(new AdminMiddleware($container))
         ->setName('species.update');
 
     $this->get('/delete/{specie_id}', SpecieController::class . ':deleteOne')
-        ->add(new AuthMiddleware($container))
+        ->add(new AdminMiddleware($container))
         ->setName('species.deleteOne');
 
     $this->post('/create', SpecieController::class . ':create')
-        ->add(new AuthMiddleware($container))
+        ->add(new AdminMiddleware($container))
         ->setName('species.create');
 });
 
@@ -106,19 +106,19 @@ $app->group('/pdf', function() {
     $container = $this->getContainer();
 
     $this->get('/add/{specie_id}', PdfController::class . ':add')
-        ->add(new AuthMiddleware($container))
+        ->add(new AdminMiddleware($container))
         ->setName('pdf.add');
 
     $this->get('/listPreview', PdfController::class . ':listPreview')
-        ->add(new AuthMiddleware($container))
+        ->add(new AdminMiddleware($container))
         ->setName('pdf.listPreview');
 
     $this->get('/listDownload', PdfController::class . ':listDownload')
-        ->add(new AuthMiddleware($container))
+        ->add(new AdminMiddleware($container))
         ->setName('pdf.listDownload');
 
     $this->get('/delete', PdfController::class . ':delete')
-        ->add(new AuthMiddleware($container))
+        ->add(new AdminMiddleware($container))
         ->setName('pdf.delete');
 });
 
