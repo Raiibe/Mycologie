@@ -30,15 +30,6 @@
         </div>
     </div>
 
-    {% if auth.role != 'admin' %}
-        <div class="mt-3">
-            <h2>Mes champignons</h2>
-            <hr />
-
-            <a class="btn btn-primary btn-slm mb-3" href="{{ path_for('user.species') }}">Voir les espèces</a>
-        </div>
-    {% endif %}
-
     <div class="mt-3">
         <h2 class="text-center"><b>Plus d'options</b></h2>
         <hr />

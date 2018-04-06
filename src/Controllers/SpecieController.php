@@ -286,8 +286,7 @@ class SpecieController extends BaseController
                         'biotope_id' => $biotope->id,
                         'other_region' => (strlen($other_region) > 0 ? $other_region : null),
                         'confusion' => (strlen($confusion) > 0 ? $specie_confusion->name_latin : null),
-                        'comment' => strval((strlen($comment) > 0 ? $comment : null)),
-                        'creator_id' => Session::get('user')->id
+                        'comment' => strval((strlen($comment) > 0 ? $comment : null))
                     ]);
 
                     $this->flash('success', "Champignon ajouté avec succès.");

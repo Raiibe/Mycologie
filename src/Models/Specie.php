@@ -18,8 +18,7 @@ class Specie extends Model
         'biotope_id',
         'other_region',
         'confusion',
-        'comment',
-        'creator_id'
+        'comment'
     ];
     public $timestamps = true;
 
@@ -36,10 +35,5 @@ class Specie extends Model
     public function getTrophicStatus()
     {
         return $this->belongsTo(TrophicStatus::class, 'trophic_status_id');
-    }
-
-    public function getCreator()
-    {
-        return $this->belongsTo(User::class, 'creator_id');
     }
 }
